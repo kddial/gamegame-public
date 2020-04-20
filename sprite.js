@@ -4,13 +4,22 @@ const SPRITE_W = 50;
 const SPRITE_H = 37;
 
 // position inside sprite sheet
-const IDLE = 'IDLE';
+export const IDLE = 'IDLE';
+export const RUN = 'RUN';
 const SPRITE_POSES = {
   [IDLE]: [
     [0, 0],
     [1, 0],
     [2, 0],
     [3, 0],
+  ],
+  [RUN]: [
+    [1, 1],
+    [2, 1],
+    [3, 1],
+    [4, 1],
+    [5, 1],
+    [6, 1],
   ],
 };
 
@@ -59,6 +68,11 @@ class Sprite {
     const poseY = poseArray[this.poseIndex][1];
     this.drawImage(poseX, poseY);
     this.poseIndex += 1;
+  }
+
+  setSpritePose(pose) {
+    this.pose = pose;
+    this.poseIndex = 0;
   }
 }
 
