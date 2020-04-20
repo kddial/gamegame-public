@@ -57,7 +57,7 @@ class Sprite {
     );
   }
 
-  drawSpritePose() {
+  drawSpritePose(destX = 0, destY = 0) {
     const { pose } = this;
     const poseArray = SPRITE_POSES[pose];
     if (this.poseIndex + 1 > poseArray.length) {
@@ -66,7 +66,7 @@ class Sprite {
 
     const poseX = poseArray[this.poseIndex][0];
     const poseY = poseArray[this.poseIndex][1];
-    this.drawImage(poseX, poseY);
+    this.drawImage(poseX, poseY, destX, destY);
     this.poseIndex += 1;
   }
 

@@ -2,8 +2,8 @@ const RUN_X_VELOCITY = 10;
 
 class Player {
   constructor() {
-    this.x = 0;
-    this.y = 0;
+    this.x = 100;
+    this.y = 140;
     this.xVelocity = 0;
     this.yVelocity = 0;
   }

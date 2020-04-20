@@ -1,9 +1,9 @@
-const GameLoop = (sprite, player, canvas) => {
+const GameLoop = (canvas, player, sprite) => {
   // todo:update positions
 
   // draw
   canvas.resetFrame();
-  sprite.drawSpritePose();
+  sprite.drawSpritePose(player.x, player.y);
 };
 
 export default GameLoop;
