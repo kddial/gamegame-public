@@ -3,24 +3,31 @@ const IMG_SPRITE_PATH = 'adventurer-v1_5-sheet.png';
 const SPRITE_W = 50;
 const SPRITE_H = 37;
 
-// position inside sprite sheet
 export const IDLE = 'IDLE';
 export const RUN = 'RUN';
 const SPRITE_POSES = {
-  [IDLE]: [
-    [0, 0],
-    [1, 0],
-    [2, 0],
-    [3, 0],
-  ],
-  [RUN]: [
-    [1, 1],
-    [2, 1],
-    [3, 1],
-    [4, 1],
-    [5, 1],
-    [6, 1],
-  ],
+  [IDLE]: {
+    // frames to wait before rendering next pose picture
+    framesPerPicture: 8,
+    // sprite sheet coordinates
+    coordinates: [
+      [0, 0],
+      [1, 0],
+      [2, 0],
+      [3, 0],
+    ],
+  },
+  [RUN]: {
+    framesPerPicture: 8,
+    coordinates: [
+      [1, 1],
+      [2, 1],
+      [3, 1],
+      [4, 1],
+      [5, 1],
+      [6, 1],
+    ],
+  },
 };
 
 class Sprite {
@@ -36,6 +43,7 @@ class Sprite {
     this.ctx = ctx;
     this.pose = IDLE;
     this.poseIndex = 0;
+    this.frameCounter = 0;
   }
 
   drawImage(sourceXi = 0, sourceYi = 0, destX = 0, destY = 0) {
@@ -59,15 +67,29 @@ class Sprite {
 
   drawSpritePose(destX = 0, destY = 0) {
     const { pose } = this;
-    const poseArray = SPRITE_POSES[pose];
-    if (this.poseIndex + 1 > poseArray.length) {
-      this.poseIndex = 0;
+    const { coordinates, framesPerPicture } = SPRITE_POSES[pose];
+
+    const drawPose = () => {
+      const poseX = coordinates[this.poseIndex][0];
+      const poseY = coordinates[this.poseIndex][1];
+      this.drawImage(poseX, poseY, destX, destY);
+    };
+
+    // do not render new pose picture until numOfFrames have past
+    if (this.frameCounter < framesPerPicture) {
+      this.frameCounter++;
+      drawPose();
+      return;
     }
 
-    const poseX = poseArray[this.poseIndex][0];
-    const poseY = poseArray[this.poseIndex][1];
-    this.drawImage(poseX, poseY, destX, destY);
-    this.poseIndex += 1;
+    // render a new pose picture and increment poseIndex
+    this.frameCounter = 0;
+    if (this.poseIndex + 1 >= coordinates.length) {
+      this.poseIndex = 0;
+    } else {
+      this.poseIndex++;
+    }
+    drawPose();
   }
 
   setSpritePose(pose) {
