@@ -6,12 +6,11 @@ class Canvas {
     this.height = this.canvas.height;
   }
 
-  drawFrame(callback) {
+  resetFrame() {
     const { width, height } = this;
     this.ctx.clearRect(0, 0, width, height);
     this.ctx.fillStyle = 'orange';
     this.ctx.fillRect(0, 0, width, height);
-    callback();
   }
 }
 
