@@ -1,5 +1,6 @@
 const GameLoop = (canvas, player, sprite) => {
-  // todo:update positions
+  // update player positions
+  player.step();
 
   // draw
   canvas.resetFrame();
