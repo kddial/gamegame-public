@@ -4,8 +4,9 @@ const SPRITE_W = 50;
 const SPRITE_H = 37;
 
 // position inside sprite sheet
+const IDLE = 'IDLE';
 const SPRITE_POSES = {
-  IDLE: [
+  [IDLE]: [
     [0, 0],
     [1, 0],
     [2, 0],
@@ -24,6 +25,8 @@ class Sprite {
     });
     this.img.src = IMG_PATH_PREFIX + IMG_SPRITE_PATH;
     this.ctx = ctx;
+    this.pose = IDLE;
+    this.poseIndex = 0;
   }
 
   drawImage(sourceXi = 0, sourceYi = 0, destX = 0, destY = 0) {
@@ -45,18 +48,17 @@ class Sprite {
     );
   }
 
-  drawSpritePose(pose = 'IDLE') {
+  drawSpritePose() {
+    const { pose } = this;
     const poseArray = SPRITE_POSES[pose];
-    if (!poseArray || poseArray.length <= 0) {
-      console.log(`${pose}, pose does not exist`);
-      return;
+    if (this.poseIndex + 1 > poseArray.length) {
+      this.poseIndex = 0;
     }
 
-    poseArray.forEach((poseCoord) => {
-      const poseX = poseCoord[0];
-      const poseY = poseCoord[1];
-      this.drawImage(poseX, poseY);
-    });
+    const poseX = poseArray[this.poseIndex][0];
+    const poseY = poseArray[this.poseIndex][1];
+    this.drawImage(poseX, poseY);
+    this.poseIndex += 1;
   }
 }
 
