@@ -4,13 +4,13 @@ const SPRITE_W = 50;
 const SPRITE_H = 37;
 
 class Sprite {
-  constructor(ctx) {
+  constructor(ctx, loadedCallback) {
     this.loaded = false;
     this.img = new Image();
     this.img.addEventListener('load', () => {
       console.log('image loaded');
       this.loaded = true;
-      this.drawImage();
+      loadedCallback();
     });
     this.img.src = IMG_PATH_PREFIX + IMG_SPRITE_PATH;
     this.ctx = ctx;

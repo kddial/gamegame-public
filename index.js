@@ -7,4 +7,9 @@ const ctx = canvas.getContext('2d');
 ctx.fillStyle = 'orange';
 ctx.fillRect(0, 0, width, height);
 
-const spriteInstance = new Sprite(ctx);
+let spriteInstance;
+const init = () => {
+  spriteInstance.drawImage();
+};
+
+spriteInstance = new Sprite(ctx, init);
