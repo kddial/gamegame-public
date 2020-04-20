@@ -9,7 +9,7 @@ ctx.fillRect(0, 0, width, height);
 
 let spriteInstance;
 const init = () => {
-  spriteInstance.drawImage();
+  spriteInstance.drawSpritePose();
 };
 
 spriteInstance = new Sprite(ctx, init);
