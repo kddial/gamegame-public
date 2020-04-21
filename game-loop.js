@@ -4,7 +4,7 @@ const GameLoop = (canvas, player, sprite) => {
 
   // draw
   canvas.resetFrame();
-  sprite.drawSpritePose(player.x, player.y);
+  sprite.drawPlayerSprite(player);
 };
 
 export default GameLoop;

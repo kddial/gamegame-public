@@ -11,9 +11,13 @@ class Player {
     this.y = 140;
     this.xVelocity = 0;
     this.yVelocity = 0;
+    this.pose = window.sprite.IDLE;
+    this.horizontalScale = 1; // 1 means right direction, -1 means left direction
   }
 
   step() {
+    const { IDLE, RUN } = window.sprite;
+
     // find direction by reading key presses
     const keyPress = window.keyPress;
     let direction = D_NONE;
@@ -23,13 +27,20 @@ class Player {
       direction = D_LEFT;
     }
 
-    // update velocity
+    // update velocity, pose, horizontalScale
     if (direction === D_RIGHT) {
       this.xVelocity = RUN_X_VELOCITY;
+      this.pose = RUN;
+      this.horizontalScale = 1;
+      //
     } else if (direction === D_LEFT) {
       this.xVelocity = -RUN_X_VELOCITY;
+      this.pose = RUN;
+      this.horizontalScale = -1;
+      //
     } else {
       this.xVelocity = 0;
+      this.pose = IDLE;
     }
 
     // update position

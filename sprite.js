@@ -3,8 +3,8 @@ const IMG_SPRITE_PATH = 'adventurer-v1_5-sheet.png';
 const SPRITE_W = 50;
 const SPRITE_H = 37;
 
-export const IDLE = 'IDLE';
-export const RUN = 'RUN';
+const IDLE = 'IDLE';
+const RUN = 'RUN';
 const SPRITE_POSES = {
   [IDLE]: {
     // frames to wait before rendering next pose picture
@@ -30,6 +30,12 @@ const SPRITE_POSES = {
   },
 };
 
+// export to window
+window.sprite = {
+  IDLE,
+  RUN,
+};
+
 class Sprite {
   constructor(ctx, loadedCallback) {
     this.loaded = false;
@@ -44,6 +50,7 @@ class Sprite {
     this.pose = IDLE;
     this.poseIndex = 0;
     this.frameCounter = 0;
+    this.horizontalScale = 1; // 1 means right direction, -1 means left direction
   }
 
   drawImage(sourceXi = 0, sourceYi = 0, destX = 0, destY = 0) {
@@ -52,17 +59,34 @@ class Sprite {
       return;
     }
 
-    this.ctx.drawImage(
-      this.img,
-      SPRITE_W * sourceXi,
-      SPRITE_H * sourceYi,
-      SPRITE_W,
-      SPRITE_H,
-      destX,
-      destY,
-      SPRITE_W,
-      SPRITE_H,
-    );
+    if (this.horizontalScale === 1) {
+      this.ctx.drawImage(
+        this.img,
+        SPRITE_W * sourceXi,
+        SPRITE_H * sourceYi,
+        SPRITE_W,
+        SPRITE_H,
+        destX,
+        destY,
+        SPRITE_W,
+        SPRITE_H,
+      );
+    } else {
+      // draw facing left direction by flipping horizontally
+      this.ctx.scale(-1, 1);
+      this.ctx.drawImage(
+        this.img,
+        SPRITE_W * sourceXi,
+        SPRITE_H * sourceYi,
+        SPRITE_W,
+        SPRITE_H,
+        -1 * (destX + SPRITE_W),
+        destY,
+        SPRITE_W,
+        SPRITE_H,
+      );
+      this.ctx.scale(-1, 1); // revert scale transformation
+    }
   }
 
   drawSpritePose(destX = 0, destY = 0) {
@@ -93,8 +117,24 @@ class Sprite {
   }
 
   setSpritePose(pose) {
-    this.pose = pose;
-    this.poseIndex = 0;
+    if (pose !== this.pose) {
+      this.pose = pose;
+      this.poseIndex = 0;
+    }
+  }
+
+  setHorizontalScale(horizontalScale) {
+    // render the sprite as is, or horizontally flipped
+    if (horizontalScale !== this.horizontalScale) {
+      this.horizontalScale = horizontalScale;
+    }
+  }
+
+  drawPlayerSprite(player) {
+    const { x, y, pose, horizontalScale } = player;
+    this.setHorizontalScale(horizontalScale);
+    this.setSpritePose(pose);
+    this.drawSpritePose(x, y);
   }
 }
 
