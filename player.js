@@ -23,39 +23,32 @@ class Player {
   }
 
   step() {
-    const { IDLE, RUN, JUMP } = window.sprite;
+    const playerState = window.getPlayerState();
+    // TODO: EXPORT TO A CONSTANTS FILE
+    const LEFT = 'LEFT';
+    const RIGHT = 'RIGHT';
+    const RUN = 'RUN';
+    const IDLE = 'IDLE';
+    const JUMP = 'JUMP';
+    // TODO: EXPORT TO A CONSTANTS FILE
 
-    // find direction by reading key presses
-    const keyPress = window.keyPress;
-    let direction = D_NONE;
-    if (keyPress['ArrowRight'] || keyPress['d']) {
-      direction = D_RIGHT;
-    } else if (keyPress['ArrowLeft'] || keyPress['a']) {
-      direction = D_LEFT;
+    const direction = playerState.includes(RIGHT) ? RIGHT : LEFT;
+    this.horizontalScale = direction === RIGHT ? 1 : -1;
+
+    // update velocity and running/idle pose
+    if (playerState.includes(RUN)) {
+      this.xVelocity = RUN_X_VELOCITY * (direction === RIGHT ? 1 : -1);
+      this.pose = window.sprite.RUN;
     }
-
-    // update velocity, pose, horizontalScale
-    if (direction === D_RIGHT) {
-      this.xVelocity = RUN_X_VELOCITY;
-      this.pose = RUN;
-      this.horizontalScale = 1;
-      //
-    } else if (direction === D_LEFT) {
-      this.xVelocity = -RUN_X_VELOCITY;
-      this.pose = RUN;
-      this.horizontalScale = -1;
-      //
-    } else {
+    if (playerState.includes(IDLE)) {
       this.xVelocity = 0;
-      this.pose = IDLE;
+      this.pose = window.sprite.IDLE;
     }
-
-    // update jumping
-    if (keyPress['ArrowUp'] || keyPress['w'] || keyPress[' ']) {
+    if (playerState.includes(JUMP)) {
       this.yVelocity = JUMP_Y_VELOCITY;
     }
 
-    // update gravity
+    // update y velocity with gravity
     if (this.yVelocity < 0) {
       this.yVelocity += GRAVITY_Y_VELOCITY;
     } else {
