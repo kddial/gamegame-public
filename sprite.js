@@ -5,6 +5,7 @@ const SPRITE_H = 37;
 
 const IDLE = 'IDLE';
 const RUN = 'RUN';
+const JUMP = 'JUMP';
 const SPRITE_POSES = {
   [IDLE]: {
     // frames to wait before rendering next pose picture
@@ -28,12 +29,23 @@ const SPRITE_POSES = {
       [6, 1],
     ],
   },
+  [JUMP]: {
+    // TODO:i dont like all the frames, play with the number
+    framesPerPicture: 8,
+    coordinates: [
+      [0, 2],
+      [1, 2],
+      [2, 2],
+      [3, 2],
+    ],
+  },
 };
 
 // export to window
 window.sprite = {
   IDLE,
   RUN,
+  JUMP,
 };
 
 class Sprite {
