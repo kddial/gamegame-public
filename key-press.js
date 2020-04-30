@@ -1,12 +1,12 @@
 window.keyPress = {};
 window.addEventListener('keydown', keyDownListener, false);
 function keyDownListener(event) {
-  window.keyPress[event.key] = Date.now();
+  window.keyPress[event.key.toLowerCase()] = Date.now();
 }
 
 window.addEventListener('keyup', keyUpListener, false);
 function keyUpListener(event) {
-  window.keyPress[event.key] = 0;
+  window.keyPress[event.key.toLowerCase()] = 0;
 }
 
 // reset window key down buttons after 2 seconds
@@ -23,13 +23,17 @@ const BUTTON_JUMP = 'BUTTON_JUMP';
 // find buttons pressed
 function buttonsPressed() {
   const buttons = [];
-  if (keyPress['ArrowRight'] || keyPress['d']) {
+  if (window.keyPress['arrowright'] || window.keyPress['d']) {
     buttons.push(BUTTON_RIGHT);
   }
-  if (keyPress['ArrowLeft'] || keyPress['a']) {
+  if (window.keyPress['arrowleft'] || window.keyPress['a']) {
     buttons.push(BUTTON_LEFT);
   }
-  if (keyPress['ArrowUp'] || keyPress['w'] || keyPress[' ']) {
+  if (
+    window.keyPress['arrowup'] ||
+    window.keyPress['w'] ||
+    window.keyPress[' ']
+  ) {
     buttons.push(BUTTON_JUMP);
   }
   return buttons;
@@ -77,5 +81,13 @@ function getPlayerState() {
   return state;
 }
 window.getPlayerState = getPlayerState;
+
+// reset jump button in the immediate next frame
+function resetJumpNextFrame() {
+  window.keyPress['arrowup'] = 0;
+  window.keyPress['w'] = 0;
+  window.keyPress[' '] = 0;
+}
+window.resetJumpNextFrame = resetJumpNextFrame;
 
 export default window.keyPress;

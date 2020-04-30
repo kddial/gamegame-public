@@ -33,10 +33,10 @@ const SPRITE_POSES = {
     // TODO:i dont like all the frames, play with the number
     framesPerPicture: 8,
     coordinates: [
-      [0, 2],
-      [1, 2],
+      // [0, 2],
+      // [1, 2],
       [2, 2],
-      [3, 2],
+      // [3, 2],
     ],
   },
 };

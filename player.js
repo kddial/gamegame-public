@@ -1,6 +1,6 @@
 const RUN_X_VELOCITY = 2;
-const JUMP_Y_VELOCITY = -10;
-const GRAVITY_Y_VELOCITY = 6;
+const JUMP_Y_VELOCITY = -12;
+const GRAVITY_Y_VELOCITY = 1;
 const FAKE_FLOOR_Y = 140; // TODO: needs to hit a block, then stop going down
 
 // directions
@@ -20,6 +20,7 @@ class Player {
     this.yVelocity = 0;
     this.pose = window.sprite.IDLE;
     this.horizontalScale = 1; // 1 means right direction, -1 means left direction
+    // TODO: needs a this.isJumping, to prevent a double jump
   }
 
   step() {
@@ -46,22 +47,21 @@ class Player {
     }
     if (playerState.includes(JUMP)) {
       this.yVelocity = JUMP_Y_VELOCITY;
+      window.resetJumpNextFrame();
     }
+
+    // TODO: i need to create a platform, and find out if player.isStanding
+    // Right now, i will hardcode the platform y coordinates
 
     // update y velocity with gravity
-    if (this.yVelocity < 0) {
-      this.yVelocity += GRAVITY_Y_VELOCITY;
+    if (this.y >= FAKE_FLOOR_Y && !playerState.includes(JUMP)) {
+      // reset to floor coordinates if NOT in jumping state
+      this.y = FAKE_FLOOR_Y;
+      this.yVelocity = 0;
     } else {
-      // TODO: needs to hit a block, then stop going down
-      if (this.y > FAKE_FLOOR_Y) {
-        this.y = FAKE_FLOOR_Y;
-        this.yVelocity = 0;
-      }
-    }
-
-    // update to jump pose if moving vertically
-    if (this.yVelocity !== 0) {
-      this.pose = JUMP;
+      // keep applying gravity until it hits platform
+      this.yVelocity += GRAVITY_Y_VELOCITY;
+      this.pose = window.sprite.JUMP;
     }
 
     // update position
