@@ -50,7 +50,7 @@ class Sprite {
     this.loaded = false;
     this.img = new Image();
     this.img.addEventListener('load', () => {
-      console.log('image loaded');
+      console.log('player image loaded');
       this.loaded = true;
       loadedCallback();
     });
