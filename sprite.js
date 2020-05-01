@@ -31,12 +31,12 @@ const SPRITE_POSES = {
   },
   [JUMP]: {
     // TODO:i dont like all the frames, play with the number
-    framesPerPicture: 8,
+    framesPerPicture: 12,
     coordinates: [
       // [0, 2],
-      // [1, 2],
+      [1, 2],
       [2, 2],
-      // [3, 2],
+      [3, 2],
     ],
   },
 };
@@ -111,14 +111,20 @@ class Sprite {
       this.drawImage(poseX, poseY, destX, destY);
     };
 
-    // do not render new pose picture until numOfFrames have past
+    // if in jump pose, stay on the last frame until post changes
+    if (this.pose === JUMP && this.poseIndex === coordinates.length - 1) {
+      drawPose();
+      return;
+    }
+
+    // do not render new pose frame until numOfFrames have past
     if (this.frameCounter < framesPerPicture) {
       this.frameCounter++;
       drawPose();
       return;
     }
 
-    // render a new pose picture and increment poseIndex
+    // render a new pose frame and increment poseIndex
     this.frameCounter = 0;
     if (this.poseIndex + 1 >= coordinates.length) {
       this.poseIndex = 0;

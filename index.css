@@ -1,3 +1,7 @@
 #canvas {
   outline: 1px solid black;
 }
+
+body {
+  background: orange;
+}

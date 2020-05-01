@@ -1,6 +1,6 @@
 const RUN_X_VELOCITY = 2;
-const JUMP_Y_VELOCITY = -12;
-const GRAVITY_Y_VELOCITY = 1;
+const JUMP_Y_VELOCITY = -10;
+const GRAVITY_Y_VELOCITY = 0.5;
 const FAKE_FLOOR_Y = 140; // TODO: needs to hit a block, then stop going down
 
 // directions
