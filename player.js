@@ -3,15 +3,6 @@ const JUMP_Y_VELOCITY = -8;
 const GRAVITY_Y_VELOCITY = 0.5;
 const FAKE_FLOOR_Y = 140; // TODO: needs to hit a block, then stop going down
 
-// directions
-const D_NONE = 'D_NONE';
-const D_LEFT = 'D_LEFT';
-const D_RIGHT = 'D_RIGHT';
-
-// jumping
-const D_JUMP = 'D_JUMP';
-const D_NO_JUMP = 'D_NO_JUMP';
-
 // TODO: EXPORT TO A CONSTANTS FILE
 const LEFT = 'LEFT';
 const RIGHT = 'RIGHT';
@@ -55,12 +46,7 @@ class Player {
     // Right now, i will hardcode the platform y coordinates
 
     // update y velocity with gravity
-    if (this.y >= FAKE_FLOOR_Y && !playerButtonState.includes(JUMP)) {
-      // reset to floor coordinates if NOT in jumping state
-      this.y = FAKE_FLOOR_Y;
-      this.yVelocity = 0;
-      this.isJumping = false;
-    } else {
+    if (this.y < FAKE_FLOOR_Y) {
       // keep applying gravity until it hits platform
       this.yVelocity += GRAVITY_Y_VELOCITY;
       this.pose = window.sprite.JUMP;
@@ -69,6 +55,13 @@ class Player {
     // update position
     this.x += this.xVelocity;
     this.y += this.yVelocity;
+
+    // ensure this.y does not go past the platform floor and reset gravity velocity
+    if (this.y > FAKE_FLOOR_Y) {
+      this.y = FAKE_FLOOR_Y;
+      this.yVelocity = 0;
+      this.isJumping = false;
+    }
   }
 }
 
