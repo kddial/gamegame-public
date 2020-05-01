@@ -1,3 +1,14 @@
+const {
+  IDLE_RIGHT,
+  IDLE_LEFT,
+  JUMP_RIGHT,
+  JUMP_LEFT,
+  RUN_RIGHT,
+  RUN_LEFT,
+  RIGHT,
+  LEFT,
+} = window.CONSTANTS;
+
 window.keyPress = {};
 window.addEventListener('keydown', keyDownListener, false);
 function keyDownListener(event) {
@@ -38,21 +49,6 @@ function buttonsPressed() {
   }
   return buttons;
 }
-
-// finite state machine for players state
-// input is keyboard keys and previous state
-// output is player's state
-
-// possible states
-const IDLE_RIGHT = 'IDLE_RIGHT';
-const IDLE_LEFT = 'IDLE_LEFT';
-const JUMP_RIGHT = 'JUMP_RIGHT';
-const JUMP_LEFT = 'JUMP_LEFT';
-const RUN_RIGHT = 'RUN_RIGHT';
-const RUN_LEFT = 'RUN_LEFT';
-
-const RIGHT = 'RIGHT';
-const LEFT = 'LEFT';
 
 // find player state based on buttons and previous state
 function getPlayerButtonState() {

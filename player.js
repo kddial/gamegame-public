@@ -1,15 +1,14 @@
-const RUN_X_VELOCITY = 2;
-const JUMP_Y_VELOCITY = -8;
-const GRAVITY_Y_VELOCITY = 0.5;
-const FAKE_FLOOR_Y = 140; // TODO: needs to hit a block, then stop going down
-
-// TODO: EXPORT TO A CONSTANTS FILE
-const LEFT = 'LEFT';
-const RIGHT = 'RIGHT';
-const RUN = 'RUN';
-const IDLE = 'IDLE';
-const JUMP = 'JUMP';
-// TODO: EXPORT TO A CONSTANTS FILE
+const {
+  LEFT,
+  RIGHT,
+  IDLE,
+  RUN,
+  JUMP,
+  RUN_X_VELOCITY,
+  JUMP_Y_VELOCITY,
+  GRAVITY_Y_VELOCITY,
+  FAKE_FLOOR_Y,
+} = window.CONSTANTS;
 
 class Player {
   constructor() {
