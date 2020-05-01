@@ -55,7 +55,7 @@ const RIGHT = 'RIGHT';
 const LEFT = 'LEFT';
 
 // find player state based on buttons and previous state
-function getPlayerState() {
+function getPlayerButtonState() {
   const previousState = window.playerState || IDLE_RIGHT;
   const prevDirection = previousState.includes(RIGHT) ? RIGHT : LEFT;
   const buttons = buttonsPressed();
@@ -80,14 +80,14 @@ function getPlayerState() {
   window.playerState = state;
   return state;
 }
-window.getPlayerState = getPlayerState;
+window.getPlayerButtonState = getPlayerButtonState;
 
-// reset jump button in the immediate next frame
-function resetJumpNextFrame() {
+// reset jump button key down in the immediate next frame
+function resetJumpKeyDownForNextFrame() {
   window.keyPress['arrowup'] = 0;
   window.keyPress['w'] = 0;
   window.keyPress[' '] = 0;
 }
-window.resetJumpNextFrame = resetJumpNextFrame;
+window.resetJumpKeyDownForNextFrame = resetJumpKeyDownForNextFrame;
 
 export default window.keyPress;
