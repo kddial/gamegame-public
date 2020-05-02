@@ -4,6 +4,7 @@ const {
   PLATFORM_SPRITE_H,
   HIT_BOX_COLOR,
   SPRITE_BOX_COLOR,
+  SHOW_SPRITE_BOX,
 } = window.gamegame.CONSTANTS;
 const { drawBorderRect } = window.gamegame;
 const IMG_SPRITE_PATH = 'platform_v1.1.png';
@@ -67,14 +68,15 @@ class PlatformSprite {
       } = platformInstance;
 
       // sprite box
-      drawBorderRect(
-        this.ctx,
-        x,
-        y,
-        width,
-        PLATFORM_SPRITE_H,
-        SPRITE_BOX_COLOR,
-      );
+      SHOW_SPRITE_BOX &&
+        drawBorderRect(
+          this.ctx,
+          x,
+          y,
+          width,
+          PLATFORM_SPRITE_H,
+          SPRITE_BOX_COLOR,
+        );
 
       // hit box
       drawBorderRect(

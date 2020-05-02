@@ -7,6 +7,7 @@ const {
   PLAYER_SPRITE_H,
   SPRITE_BOX_COLOR,
   HIT_BOX_COLOR,
+  SHOW_SPRITE_BOX,
 } = window.gamegame.CONSTANTS;
 const { drawBorderRect } = window.gamegame;
 const IMG_SPRITE_PATH = 'adventurer-v1_5-sheet.png';
@@ -163,14 +164,15 @@ class PlayerSprite {
     } = player.getHitBoxProps();
 
     // sprite box
-    drawBorderRect(
-      this.ctx,
-      x,
-      y,
-      PLAYER_SPRITE_W,
-      PLAYER_SPRITE_H,
-      SPRITE_BOX_COLOR,
-    );
+    SHOW_SPRITE_BOX &&
+      drawBorderRect(
+        this.ctx,
+        x,
+        y,
+        PLAYER_SPRITE_W,
+        PLAYER_SPRITE_H,
+        SPRITE_BOX_COLOR,
+      );
 
     // hit box
     drawBorderRect(
