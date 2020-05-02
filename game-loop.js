@@ -1,4 +1,10 @@
-const GameLoop = (canvas, player, platformSprite, playerSprite) => {
+const GameLoop = ({
+  canvas,
+  player,
+  playerSprite,
+  playforms,
+  platformSprite,
+}) => {
   // update player positions
   player.step();
 

@@ -4,20 +4,24 @@ import Player from './player.js';
 import Canvas from './canvas.js';
 import GameLoop from './game-loop.js';
 import KeyPress from './key-press.js';
+import Platform from './platform.js';
+import Platforms from './platforms.js';
 
 const canvasInstance = new Canvas();
 const playerInstance = new Player();
 const platformSpriteInstance = new PlatformSprite(canvasInstance.ctx);
 const playerSpriteInstance = new PlayerSprite(canvasInstance.ctx, init);
+const playformsInstance = new Platforms();
 
 // step frame
 function step() {
-  GameLoop(
-    canvasInstance,
-    playerInstance,
-    platformSpriteInstance,
-    playerSpriteInstance,
-  );
+  GameLoop({
+    canvas: canvasInstance,
+    player: playerInstance,
+    playerSprite: playerSpriteInstance,
+    playforms: playformsInstance,
+    platformSprite: platformSpriteInstance,
+  });
   window.requestAnimationFrame(step);
   return;
 }

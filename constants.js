@@ -27,3 +27,7 @@ const CONSTANTS = {
 };
 
 window.CONSTANTS = CONSTANTS;
+
+window.gamegame = {
+  classes: {},
+};
