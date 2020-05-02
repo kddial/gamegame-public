@@ -39,6 +39,14 @@ const CONSTANTS = {
   PLATFORM_SPRITE_H: 48,
 };
 
+// helper functions
+function drawBorderRect(ctx, x, y, width, height, color) {
+  ctx.beginPath();
+  ctx.strokeStyle = color;
+  ctx.rect(x, y, width, height);
+  ctx.stroke();
+}
+
 // HACKY
 // initialize use of window.gamegame exploit to share things through files
 window.gamegame = {
@@ -46,4 +54,5 @@ window.gamegame = {
   CONSTANTS,
   getPlayerButtonState: () => {},
   resetJumpKeyDownForNextFrame: () => {},
+  drawBorderRect,
 };

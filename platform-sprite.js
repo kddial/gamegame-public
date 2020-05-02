@@ -5,6 +5,7 @@ const {
   HIT_BOX_COLOR,
   SPRITE_BOX_COLOR,
 } = window.gamegame.CONSTANTS;
+const { drawBorderRect } = window.gamegame;
 const IMG_SPRITE_PATH = 'platform_v1.1.png';
 
 class PlatformSprite {
@@ -66,16 +67,24 @@ class PlatformSprite {
       } = platformInstance;
 
       // sprite box
-      this.ctx.beginPath();
-      this.ctx.strokeStyle = SPRITE_BOX_COLOR;
-      this.ctx.rect(x, y, width, PLATFORM_SPRITE_H);
-      this.ctx.stroke();
+      drawBorderRect(
+        this.ctx,
+        x,
+        y,
+        width,
+        PLATFORM_SPRITE_H,
+        SPRITE_BOX_COLOR,
+      );
 
       // hit box
-      this.ctx.beginPath();
-      this.ctx.strokeStyle = HIT_BOX_COLOR;
-      this.ctx.rect(xHitBox, yHitBox, widthHitBox, heightHitBox);
-      this.ctx.stroke();
+      drawBorderRect(
+        this.ctx,
+        xHitBox,
+        yHitBox,
+        widthHitBox,
+        heightHitBox,
+        HIT_BOX_COLOR,
+      );
     });
   }
 }
