@@ -1,4 +1,4 @@
-const { IMG_PATH_PREFIX, IDLE, RUN, JUMP } = window.CONSTANTS;
+const { IMG_PATH_PREFIX, IDLE, RUN, JUMP } = window.gamegame.CONSTANTS;
 const IMG_SPRITE_PATH = 'adventurer-v1_5-sheet.png';
 const SPRITE_W = 50;
 const SPRITE_H = 37;

@@ -1,4 +1,4 @@
-const { IMG_PATH_PREFIX } = window.CONSTANTS;
+const { IMG_PATH_PREFIX } = window.gamegame.CONSTANTS;
 const IMG_SPRITE_PATH = 'platform_v1_0.png';
 const SPRITE_W = 200; // full is 200
 const SPRITE_H = 20;

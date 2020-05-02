@@ -26,8 +26,11 @@ const CONSTANTS = {
   FAKE_FLOOR_Y: 140, // TODO: needs to hit a block, then stop going down
 };
 
-window.CONSTANTS = CONSTANTS;
-
+// HACKY
+// initialize use of window.gamegame exploit to share things through files
 window.gamegame = {
   classes: {},
+  CONSTANTS,
+  getPlayerButtonState: () => {},
+  resetJumpKeyDownForNextFrame: () => {},
 };

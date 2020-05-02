@@ -8,7 +8,7 @@ const {
   JUMP_Y_VELOCITY,
   GRAVITY_Y_VELOCITY,
   FAKE_FLOOR_Y,
-} = window.CONSTANTS;
+} = window.gamegame.CONSTANTS;
 
 class Player {
   constructor() {
@@ -16,29 +16,29 @@ class Player {
     this.y = 140;
     this.xVelocity = 0;
     this.yVelocity = 0;
-    this.pose = window.CONSTANTS.IDLE;
+    this.pose = IDLE;
     this.horizontalScale = 1; // 1 means right direction, -1 means left direction
     this.isJumping = false;
   }
 
   step() {
-    const playerButtonState = window.getPlayerButtonState();
+    const playerButtonState = window.gamegame.getPlayerButtonState();
     const direction = playerButtonState.includes(RIGHT) ? RIGHT : LEFT;
     this.horizontalScale = direction === RIGHT ? 1 : -1;
 
     // update velocity and running/idle pose
     if (playerButtonState.includes(RUN)) {
       this.xVelocity = RUN_X_VELOCITY * (direction === RIGHT ? 1 : -1);
-      this.pose = window.CONSTANTS.RUN;
+      this.pose = RUN;
     }
     if (playerButtonState.includes(IDLE)) {
       this.xVelocity = 0;
-      this.pose = window.CONSTANTS.IDLE;
+      this.pose = IDLE;
     }
     if (playerButtonState.includes(JUMP) && this.isJumping === false) {
       this.isJumping = true;
       this.yVelocity = JUMP_Y_VELOCITY;
-      window.resetJumpKeyDownForNextFrame();
+      window.gamegame.resetJumpKeyDownForNextFrame();
     }
 
     // TODO: i need to create a platform, and find out if player.isStanding
@@ -48,7 +48,7 @@ class Player {
     if (this.y < FAKE_FLOOR_Y) {
       // keep applying gravity until it hits platform
       this.yVelocity += GRAVITY_Y_VELOCITY;
-      this.pose = window.CONSTANTS.JUMP;
+      this.pose = JUMP;
     }
 
     // update position

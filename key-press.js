@@ -7,21 +7,25 @@ const {
   RUN_LEFT,
   RIGHT,
   LEFT,
-} = window.CONSTANTS;
+} = window.gamegame.CONSTANTS;
 
-window.keyPress = {};
+// define glocal variables used in this file
+const _keyPress = {};
+let _playerButtonState;
+//
+
 window.addEventListener('keydown', keyDownListener, false);
 function keyDownListener(event) {
-  window.keyPress[event.key.toLowerCase()] = Date.now();
+  _keyPress[event.key.toLowerCase()] = Date.now();
 }
 
 window.addEventListener('keyup', keyUpListener, false);
 function keyUpListener(event) {
-  window.keyPress[event.key.toLowerCase()] = 0;
+  _keyPress[event.key.toLowerCase()] = 0;
 }
 
 // reset window key down buttons after 2 seconds
-function resetKeyPressedDown() {
+function reset_KeyPressedDown() {
   // todo
   // fixes the problem when you hold down the button, then lose focus of window
 }
@@ -34,17 +38,13 @@ const BUTTON_JUMP = 'BUTTON_JUMP';
 // find buttons pressed
 function buttonsPressed() {
   const buttons = [];
-  if (window.keyPress['arrowright'] || window.keyPress['d']) {
+  if (_keyPress['arrowright'] || _keyPress['d']) {
     buttons.push(BUTTON_RIGHT);
   }
-  if (window.keyPress['arrowleft'] || window.keyPress['a']) {
+  if (_keyPress['arrowleft'] || _keyPress['a']) {
     buttons.push(BUTTON_LEFT);
   }
-  if (
-    window.keyPress['arrowup'] ||
-    window.keyPress['w'] ||
-    window.keyPress[' ']
-  ) {
+  if (_keyPress['arrowup'] || _keyPress['w'] || _keyPress[' ']) {
     buttons.push(BUTTON_JUMP);
   }
   return buttons;
@@ -52,7 +52,7 @@ function buttonsPressed() {
 
 // find player state based on buttons and previous state
 function getPlayerButtonState() {
-  const previousState = window.playerState || IDLE_RIGHT;
+  const previousState = _playerButtonState || IDLE_RIGHT;
   const prevDirection = previousState.includes(RIGHT) ? RIGHT : LEFT;
   const buttons = buttonsPressed();
   let state = IDLE_RIGHT;
@@ -73,17 +73,17 @@ function getPlayerButtonState() {
     state = direction === LEFT ? IDLE_LEFT : IDLE_RIGHT;
   }
 
-  window.playerState = state;
+  _playerButtonState = state;
   return state;
 }
-window.getPlayerButtonState = getPlayerButtonState;
+window.gamegame.getPlayerButtonState = getPlayerButtonState;
 
 // reset jump button key down in the immediate next frame
 function resetJumpKeyDownForNextFrame() {
-  window.keyPress['arrowup'] = 0;
-  window.keyPress['w'] = 0;
-  window.keyPress[' '] = 0;
+  _keyPress['arrowup'] = 0;
+  _keyPress['w'] = 0;
+  _keyPress[' '] = 0;
 }
-window.resetJumpKeyDownForNextFrame = resetJumpKeyDownForNextFrame;
+window.gamegame.resetJumpKeyDownForNextFrame = resetJumpKeyDownForNextFrame;
 
-export default window.keyPress;
+export default _keyPress;
