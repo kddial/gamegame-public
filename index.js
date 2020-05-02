@@ -11,7 +11,7 @@ const canvasInstance = new Canvas();
 const playerInstance = new Player();
 const platformSpriteInstance = new PlatformSprite(canvasInstance.ctx);
 const playerSpriteInstance = new PlayerSprite(canvasInstance.ctx, init);
-const playformsInstance = new Platforms();
+const platformsInstance = new Platforms();
 
 // step frame
 function step() {
@@ -19,7 +19,7 @@ function step() {
     canvas: canvasInstance,
     player: playerInstance,
     playerSprite: playerSpriteInstance,
-    playforms: playformsInstance,
+    platforms: platformsInstance,
     platformSprite: platformSpriteInstance,
   });
   window.requestAnimationFrame(step);

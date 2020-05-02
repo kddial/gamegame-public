@@ -1,7 +1,7 @@
 const { IMG_PATH_PREFIX } = window.gamegame.CONSTANTS;
-const IMG_SPRITE_PATH = 'platform_v1_0.png';
+const IMG_SPRITE_PATH = 'platform_v1.1.png';
 const SPRITE_W = 200; // full is 200
-const SPRITE_H = 20;
+const SPRITE_H = 48;
 
 const PLATFORM_SPRITE_X_COORDINATES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -17,7 +17,7 @@ class PlatformSprite {
     this.ctx = ctx;
   }
 
-  drawImage(sourceXi = 0, sourceYi = 0, destX = 0, destY = 140 + 28) {
+  drawImage(sourceXi = 0, sourceYi = 0, destX = 0, destY = 0) {
     if (this.loaded === false) {
       console.log('image not loaded yet');
       return;
@@ -34,42 +34,15 @@ class PlatformSprite {
       SPRITE_W,
       SPRITE_H,
     );
+  }
 
-    this.ctx.drawImage(
-      this.img,
-      SPRITE_W * sourceXi,
-      SPRITE_H * sourceYi,
-      SPRITE_W,
-      SPRITE_H,
-      destX + 1 * SPRITE_W,
-      destY,
-      SPRITE_W,
-      SPRITE_H,
-    );
+  drawPlatforms(platforms) {
+    const { instances } = platforms;
 
-    this.ctx.drawImage(
-      this.img,
-      SPRITE_W * sourceXi,
-      SPRITE_H * sourceYi,
-      SPRITE_W,
-      SPRITE_H,
-      destX + 2 * SPRITE_W,
-      destY,
-      SPRITE_W,
-      SPRITE_H,
-    );
-
-    this.ctx.drawImage(
-      this.img,
-      SPRITE_W * sourceXi,
-      SPRITE_H * sourceYi,
-      SPRITE_W,
-      SPRITE_H,
-      destX + 3 * SPRITE_W,
-      destY,
-      SPRITE_W,
-      SPRITE_H,
-    );
+    instances.forEach((platformInstance) => {
+      const { x, y, width, spriteSeed } = platformInstance;
+      this.drawImage(0, 0, x, y);
+    });
   }
 }
 

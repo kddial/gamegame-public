@@ -2,7 +2,7 @@ const GameLoop = ({
   canvas,
   player,
   playerSprite,
-  playforms,
+  platforms,
   platformSprite,
 }) => {
   // update player positions
@@ -10,7 +10,7 @@ const GameLoop = ({
 
   // draw
   canvas.resetFrame();
-  platformSprite.drawImage();
+  platformSprite.drawPlatforms(platforms);
   playerSprite.drawPlayerSprite(player);
 };
 
