@@ -1,11 +1,11 @@
-const GameLoop = (canvas, player, platformSprite, sprite) => {
+const GameLoop = (canvas, player, platformSprite, playerSprite) => {
   // update player positions
   player.step();
 
   // draw
   canvas.resetFrame();
   platformSprite.drawImage();
-  sprite.drawPlayerSprite(player);
+  playerSprite.drawPlayerSprite(player);
 };
 
 export default GameLoop;

@@ -4,6 +4,7 @@ const CONSTANTS = {
   RIGHT: 'RIGHT',
   LEFT: 'LEFT',
 
+  // player sprite poses
   IDLE: 'IDLE',
   RUN: 'RUN',
   JUMP: 'JUMP',

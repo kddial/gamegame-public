@@ -1,5 +1,5 @@
 import PlatformSprite from './platform-sprite.js';
-import Sprite from './sprite.js';
+import PlayerSprite from './player-sprite.js';
 import Player from './player.js';
 import Canvas from './canvas.js';
 import GameLoop from './game-loop.js';
@@ -8,7 +8,7 @@ import KeyPress from './key-press.js';
 const canvasInstance = new Canvas();
 const playerInstance = new Player();
 const platformSpriteInstance = new PlatformSprite(canvasInstance.ctx);
-const spriteInstance = new Sprite(canvasInstance.ctx, init);
+const playerSpriteInstance = new PlayerSprite(canvasInstance.ctx, init);
 
 // step frame
 function step() {
@@ -16,7 +16,7 @@ function step() {
     canvasInstance,
     playerInstance,
     platformSpriteInstance,
-    spriteInstance,
+    playerSpriteInstance,
   );
   window.requestAnimationFrame(step);
   return;

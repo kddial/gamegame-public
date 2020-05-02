@@ -16,7 +16,7 @@ class Player {
     this.y = 140;
     this.xVelocity = 0;
     this.yVelocity = 0;
-    this.pose = window.sprite.IDLE;
+    this.pose = window.CONSTANTS.IDLE;
     this.horizontalScale = 1; // 1 means right direction, -1 means left direction
     this.isJumping = false;
   }
@@ -29,11 +29,11 @@ class Player {
     // update velocity and running/idle pose
     if (playerButtonState.includes(RUN)) {
       this.xVelocity = RUN_X_VELOCITY * (direction === RIGHT ? 1 : -1);
-      this.pose = window.sprite.RUN;
+      this.pose = window.CONSTANTS.RUN;
     }
     if (playerButtonState.includes(IDLE)) {
       this.xVelocity = 0;
-      this.pose = window.sprite.IDLE;
+      this.pose = window.CONSTANTS.IDLE;
     }
     if (playerButtonState.includes(JUMP) && this.isJumping === false) {
       this.isJumping = true;
@@ -48,7 +48,7 @@ class Player {
     if (this.y < FAKE_FLOOR_Y) {
       // keep applying gravity until it hits platform
       this.yVelocity += GRAVITY_Y_VELOCITY;
-      this.pose = window.sprite.JUMP;
+      this.pose = window.CONSTANTS.JUMP;
     }
 
     // update position

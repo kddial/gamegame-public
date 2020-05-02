@@ -38,14 +38,7 @@ const SPRITE_POSES = {
   },
 };
 
-// export to window
-window.sprite = {
-  IDLE,
-  RUN,
-  JUMP,
-};
-
-class Sprite {
+class PlayerSprite {
   constructor(ctx, loadedCallback) {
     this.loaded = false;
     this.img = new Image();
@@ -153,4 +146,4 @@ class Sprite {
   }
 }
 
-export default Sprite;
+export default PlayerSprite;
