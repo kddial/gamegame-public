@@ -8,6 +8,7 @@ class Platforms {
       new Platform(200, FAKE_FLOOR_Y, 200, 'floor-two'),
       new Platform(200 * 2, FAKE_FLOOR_Y, 200, 'floor-three'),
       new Platform(200 * 3, FAKE_FLOOR_Y, 200, 'floor-four'),
+      new Platform(200, 80, 100, 'platform-one'),
     ];
   }
 }
