@@ -5,7 +5,10 @@ const {
   JUMP,
   PLAYER_SPRITE_W,
   PLAYER_SPRITE_H,
+  SPRITE_BOX_COLOR,
+  HIT_BOX_COLOR,
 } = window.gamegame.CONSTANTS;
+const { drawBorderRect } = window.gamegame;
 const IMG_SPRITE_PATH = 'adventurer-v1_5-sheet.png';
 
 const SPRITE_POSES = {
@@ -148,6 +151,36 @@ class PlayerSprite {
     this.setHorizontalScale(horizontalScale);
     this.setSpritePose(pose);
     this.drawSpritePose(x, y);
+  }
+
+  drawPlayerHitBox(player) {
+    const { x, y } = player;
+    const {
+      xHitBox,
+      yHitBox,
+      widthHitBox,
+      heightHitBox,
+    } = player.getHitBoxProps();
+
+    // sprite box
+    drawBorderRect(
+      this.ctx,
+      x,
+      y,
+      PLAYER_SPRITE_W,
+      PLAYER_SPRITE_H,
+      SPRITE_BOX_COLOR,
+    );
+
+    // hit box
+    drawBorderRect(
+      this.ctx,
+      xHitBox,
+      yHitBox,
+      widthHitBox,
+      heightHitBox,
+      HIT_BOX_COLOR,
+    );
   }
 }
 

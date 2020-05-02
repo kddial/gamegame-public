@@ -19,6 +19,26 @@ class Player {
     this.pose = IDLE;
     this.horizontalScale = 1; // 1 means right direction, -1 means left direction
     this.isJumping = false;
+
+    // these are offests from local origin (this.x, this.y)
+    this.xHitBoxLocal = 20;
+    this.yHitBoxLocal = 12;
+    this.widthHitBox = 10;
+    this.heightHitBox = 24;
+  }
+
+  // TODO: i might have to make hit boxes PER pose frame
+  getHitBoxProps() {
+    const { xHitBoxLocal, yHitBoxLocal, widthHitBox, heightHitBox } = this;
+    // in reference to canvas (so we add local origin)
+    const xHitBox = xHitBoxLocal + this.x;
+    const yHitBox = yHitBoxLocal + this.y;
+    return {
+      xHitBox,
+      yHitBox,
+      widthHitBox,
+      heightHitBox,
+    };
   }
 
   step() {
