@@ -10,7 +10,6 @@ class Platform {
     this.xHitBox = 0 + this.x; // in reference to canvas (so we add local origin)
     this.yHitBox = 37 + this.y; // in reference to canvas (so we add local origin)
     this.widthHitBox = this.width;
-    this.heightHitBox = PLATFORM_SPRITE_H - (this.yHitBox - this.y); // reach the bottom of the sprite
   }
 }
 

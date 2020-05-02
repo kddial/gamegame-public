@@ -57,15 +57,7 @@ class PlatformSprite {
   drawPlatformsHitBox(platforms) {
     const { instances } = platforms;
     instances.forEach((platformInstance) => {
-      const {
-        x,
-        y,
-        width,
-        xHitBox,
-        yHitBox,
-        widthHitBox,
-        heightHitBox,
-      } = platformInstance;
+      const { x, y, width, xHitBox, yHitBox, widthHitBox } = platformInstance;
 
       // sprite box
       SHOW_SPRITE_BOX &&
@@ -79,14 +71,7 @@ class PlatformSprite {
         );
 
       // hit box
-      drawBorderRect(
-        this.ctx,
-        xHitBox,
-        yHitBox,
-        widthHitBox,
-        heightHitBox,
-        HIT_BOX_COLOR,
-      );
+      drawBorderRect(this.ctx, xHitBox, yHitBox, widthHitBox, 0, HIT_BOX_COLOR);
     });
   }
 }
