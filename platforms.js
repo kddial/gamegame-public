@@ -1,14 +1,31 @@
 const { Platform } = window.gamegame.classes;
-const { FAKE_FLOOR_Y } = window.gamegame.CONSTANTS;
+const { FAKE_FLOOR_Y, PLATFORM_SPRITE_W } = window.gamegame.CONSTANTS;
 
 class Platforms {
   constructor() {
     this.instances = [
-      new Platform(0, FAKE_FLOOR_Y, 200, 'floor-one'),
-      new Platform(200, FAKE_FLOOR_Y, 200, 'floor-two'),
-      new Platform(200 * 2, FAKE_FLOOR_Y, 200, 'floor-three'),
-      new Platform(200 * 3, FAKE_FLOOR_Y, 200, 'floor-four'),
-      new Platform(200, 80, 100, 'platform-one'),
+      // Platform args: (x, y, width, seed)
+      new Platform(0, FAKE_FLOOR_Y, PLATFORM_SPRITE_W, 'floor-one'),
+      new Platform(
+        PLATFORM_SPRITE_W,
+        FAKE_FLOOR_Y,
+        PLATFORM_SPRITE_W,
+        'floor-two',
+      ),
+      new Platform(
+        PLATFORM_SPRITE_W * 2,
+        FAKE_FLOOR_Y,
+        PLATFORM_SPRITE_W,
+        'floor-three',
+      ),
+      new Platform(
+        PLATFORM_SPRITE_W * 3,
+        FAKE_FLOOR_Y,
+        PLATFORM_SPRITE_W,
+        'floor-four',
+      ),
+      new Platform(PLATFORM_SPRITE_W, 80, 100, 'platform-one'),
+      new Platform(0, 0, 100, 'test-platform-one'),
     ];
   }
 }

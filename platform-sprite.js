@@ -1,9 +1,11 @@
-const { IMG_PATH_PREFIX } = window.gamegame.CONSTANTS;
+const {
+  IMG_PATH_PREFIX,
+  PLATFORM_SPRITE_W,
+  PLATFORM_SPRITE_H,
+  HIT_BOX_COLOR,
+  SPRITE_BOX_COLOR,
+} = window.gamegame.CONSTANTS;
 const IMG_SPRITE_PATH = 'platform_v1.1.png';
-const SPRITE_W = 200; // full is 200
-const SPRITE_H = 48;
-
-const PLATFORM_SPRITE_X_COORDINATES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 class PlatformSprite {
   constructor(ctx) {
@@ -22,7 +24,7 @@ class PlatformSprite {
     sourceYi = 0,
     destX = 0,
     destY = 0,
-    width = SPRITE_W,
+    width = PLATFORM_SPRITE_W,
   ) {
     if (this.loaded === false) {
       console.log('image not loaded yet');
@@ -33,11 +35,11 @@ class PlatformSprite {
       sourceXi, // source image x position
       sourceYi, // source image y position
       width, // source image width
-      SPRITE_H, // source image height
+      PLATFORM_SPRITE_H, // source image height
       destX, // destination canvas x
       destY, // destination canvas y
       width, // destination canvas width (if diff than source img width, then it will stretch or shrink)
-      SPRITE_H, // destination canvas height (if diff than source img height, then it will stretch of shrink)
+      PLATFORM_SPRITE_H, // destination canvas height (if diff than source img height, then it will stretch of shrink)
     );
   }
 
@@ -47,6 +49,33 @@ class PlatformSprite {
     instances.forEach((platformInstance) => {
       const { x, y, width, spriteSeed } = platformInstance;
       this.drawImage(0, 0, x, y, width);
+    });
+  }
+
+  drawPlatformsHitBox(platforms) {
+    const { instances } = platforms;
+    instances.forEach((platformInstance) => {
+      const {
+        x,
+        y,
+        width,
+        xHitBox,
+        yHitBox,
+        widthHitBox,
+        heightHitBox,
+      } = platformInstance;
+
+      // sprite box
+      this.ctx.beginPath();
+      this.ctx.strokeStyle = SPRITE_BOX_COLOR;
+      this.ctx.rect(x, y, width, PLATFORM_SPRITE_H);
+      this.ctx.stroke();
+
+      // hit box
+      this.ctx.beginPath();
+      this.ctx.strokeStyle = HIT_BOX_COLOR;
+      this.ctx.rect(xHitBox, yHitBox, widthHitBox, heightHitBox);
+      this.ctx.stroke();
     });
   }
 }

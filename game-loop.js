@@ -1,3 +1,5 @@
+const { SHOW_HIT_BOX } = window.gamegame.CONSTANTS;
+
 const GameLoop = ({
   canvas,
   player,
@@ -8,9 +10,14 @@ const GameLoop = ({
   // update player positions
   player.step();
 
-  // draw
+  //--- drawing ---
   canvas.resetFrame();
+
+  // draw platforms
   platformSprite.drawPlatforms(platforms);
+  SHOW_HIT_BOX && platformSprite.drawPlatformsHitBox(platforms);
+
+  // draw player
   playerSprite.drawPlayerSprite(player);
 };
 

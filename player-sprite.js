@@ -1,7 +1,12 @@
-const { IMG_PATH_PREFIX, IDLE, RUN, JUMP } = window.gamegame.CONSTANTS;
+const {
+  IMG_PATH_PREFIX,
+  IDLE,
+  RUN,
+  JUMP,
+  PLAYER_SPRITE_W,
+  PLAYER_SPRITE_H,
+} = window.gamegame.CONSTANTS;
 const IMG_SPRITE_PATH = 'adventurer-v1_5-sheet.png';
-const SPRITE_W = 50;
-const SPRITE_H = 37;
 
 const SPRITE_POSES = {
   [IDLE]: {
@@ -64,28 +69,28 @@ class PlayerSprite {
     if (this.horizontalScale === 1) {
       this.ctx.drawImage(
         this.img,
-        SPRITE_W * sourceXi,
-        SPRITE_H * sourceYi,
-        SPRITE_W,
-        SPRITE_H,
+        PLAYER_SPRITE_W * sourceXi,
+        PLAYER_SPRITE_H * sourceYi,
+        PLAYER_SPRITE_W,
+        PLAYER_SPRITE_H,
         destX,
         destY,
-        SPRITE_W,
-        SPRITE_H,
+        PLAYER_SPRITE_W,
+        PLAYER_SPRITE_H,
       );
     } else {
       // draw facing left direction by flipping horizontally
       this.ctx.scale(-1, 1);
       this.ctx.drawImage(
         this.img,
-        SPRITE_W * sourceXi,
-        SPRITE_H * sourceYi,
-        SPRITE_W,
-        SPRITE_H,
-        -1 * (destX + SPRITE_W),
+        PLAYER_SPRITE_W * sourceXi,
+        PLAYER_SPRITE_H * sourceYi,
+        PLAYER_SPRITE_W,
+        PLAYER_SPRITE_H,
+        -1 * (destX + PLAYER_SPRITE_W),
         destY,
-        SPRITE_W,
-        SPRITE_H,
+        PLAYER_SPRITE_W,
+        PLAYER_SPRITE_H,
       );
       this.ctx.scale(-1, 1); // revert scale transformation
     }
