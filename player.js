@@ -127,14 +127,6 @@ class Player {
     const xNew = this.x + this.xVelocity;
     const yNew = this.y + this.yVelocity;
 
-    // TODO: THIS OPTIMIZATION MIGHT BE too early, and can cause bugs in the future
-    // where we have moving platforms, or enemies.
-    // if (this.x === xNew && this.y === yNew) {
-    //   // nothing new happend, so return out of the step function
-    //   // This will change IF platforms are moving.
-    //   return;
-    // }
-
     // calculate if about to land on a platform
     const newPlayerYPositionOnPlatform = this.getNewPlayerYPositionOnPlatform(
       platforms,
