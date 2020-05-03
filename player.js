@@ -41,7 +41,42 @@ class Player {
     };
   }
 
-  step() {
+  calculateLandingOnPlatform(platforms, yPrev) {
+    const { instances } = platforms;
+    const {
+      xHitBox,
+      yHitBox,
+      widthHitBox,
+      heightHitBox,
+    } = this.getHitBoxProps();
+
+    const isFalling = yPrev < this.y;
+    const prevPlayerYBottom = yPrev + this.yHitBoxLocal + this.heightHitBox;
+
+    const playerYBottom = yHitBox + heightHitBox;
+    const playerXLeft = xHitBox;
+    const playerXRight = xHitBox + widthHitBox;
+
+    for (let i = 0; i < instances.length; i++) {
+      const {
+        xHitBox: platXHitBox,
+        yHitBox: platYHitBox,
+        widthHitBox: platWidthHitBox,
+      } = instances[i];
+
+      if (
+        isFalling &&
+        prevPlayerYBottom < platYHitBox &&
+        platYHitBox <= playerYBottom
+      ) {
+        // calulate new standing position of player
+        return platYHitBox - this.yHitBoxLocal - this.heightHitBox;
+      }
+    }
+    return null;
+  }
+
+  step(platforms) {
     const playerButtonState = window.gamegame.getPlayerButtonState();
     const direction = playerButtonState.includes(RIGHT) ? RIGHT : LEFT;
     this.horizontalScale = direction === RIGHT ? 1 : -1;
@@ -72,15 +107,27 @@ class Player {
     }
 
     // update position
+    const yPrev = this.y;
     this.x += this.xVelocity;
     this.y += this.yVelocity;
 
-    // ensure this.y does not go past the platform floor and reset gravity velocity
-    if (this.y > FAKE_FLOOR_Y) {
-      this.y = FAKE_FLOOR_Y;
+    // calculate if about to land on a platform
+    const newLandingPlatformY = this.calculateLandingOnPlatform(
+      platforms,
+      yPrev,
+    );
+    if (newLandingPlatformY !== null) {
+      this.y = newLandingPlatformY;
       this.yVelocity = 0;
       this.isJumping = false;
     }
+
+    // ensure this.y does not go past the platform floor and reset gravity velocity
+    // if (this.y > FAKE_FLOOR_Y) {
+    //   this.y = FAKE_FLOOR_Y;
+    //   this.yVelocity = 0;
+    //   this.isJumping = false;
+    // }
   }
 }
 

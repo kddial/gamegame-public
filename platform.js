@@ -8,7 +8,7 @@ class Platform {
     this.spriteSeed = spriteSeed; // used to randomize sprites for uniqe look
 
     this.xHitBox = 0 + this.x; // in reference to canvas (so we add local origin)
-    this.yHitBox = 37 + this.y; // in reference to canvas (so we add local origin)
+    this.yHitBox = 36 + this.y; // in reference to canvas (so we add local origin)
     this.widthHitBox = this.width;
   }
 }
