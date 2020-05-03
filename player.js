@@ -41,38 +41,33 @@ class Player {
     };
   }
 
-  calculateLandingOnPlatform(platforms, yPrev) {
+  // Function returns a new y pixel if player is landing on a platform
+  // based on its current y position, and new y position. If any platform
+  // in inbetween the two y positions, then we will return the platform's
+  // y position.
+  // Otherwise, function will return null when it expects to not land on a
+  // platform.
+  getNewPlayerYPositionOnPlatform(platforms, yNew) {
     const { instances } = platforms;
-    const {
-      xHitBox,
-      yHitBox,
-      widthHitBox,
-      heightHitBox,
-    } = this.getHitBoxProps();
+    const { yHitBox, heightHitBox } = this.getHitBoxProps();
 
-    const isFalling = yPrev < this.y;
-    const prevPlayerYBottom = yPrev + this.yHitBoxLocal + this.heightHitBox;
-
-    const playerYBottom = yHitBox + heightHitBox;
-    const playerXLeft = xHitBox;
-    const playerXRight = xHitBox + widthHitBox;
+    const isFalling = this.y < yNew;
+    const currentPlayerYBottom = this.y + this.yHitBoxLocal + this.heightHitBox;
+    const newPlayerYBottom = yNew + this.yHitBoxLocal + this.heightHitBox;
 
     for (let i = 0; i < instances.length; i++) {
-      const {
-        xHitBox: platXHitBox,
-        yHitBox: platYHitBox,
-        widthHitBox: platWidthHitBox,
-      } = instances[i];
+      const { yHitBox: platformYHitBox } = instances[i];
 
       if (
         isFalling &&
-        prevPlayerYBottom < platYHitBox &&
-        platYHitBox <= playerYBottom
+        currentPlayerYBottom <= platformYHitBox &&
+        platformYHitBox <= newPlayerYBottom
       ) {
-        // calulate new standing position of player
-        return platYHitBox - this.yHitBoxLocal - this.heightHitBox;
+        // player has fallen onto a plaform, return its new y position
+        return platformYHitBox - this.yHitBoxLocal - this.heightHitBox;
       }
     }
+    // player did not fall on a new platform, return null
     return null;
   }
 
@@ -96,38 +91,32 @@ class Player {
       window.gamegame.resetJumpKeyDownForNextFrame();
     }
 
-    // TODO: i need to create a platform, and find out if player.isStanding
-    // Right now, i will hardcode the platform y coordinates
-
-    // update y velocity with gravity
-    if (this.y < FAKE_FLOOR_Y) {
-      // keep applying gravity until it hits platform
+    // apply gravity to yVelocity only if player is jumping
+    if (this.isJumping === true) {
       this.yVelocity += GRAVITY_Y_VELOCITY;
       this.pose = JUMP;
     }
 
-    // update position
-    const yPrev = this.y;
-    this.x += this.xVelocity;
-    this.y += this.yVelocity;
+    // calculate new positions
+    const xNew = this.x + this.xVelocity;
+    const yNew = this.y + this.yVelocity;
 
     // calculate if about to land on a platform
-    const newLandingPlatformY = this.calculateLandingOnPlatform(
+    const newPlayerYPositionOnPlatform = this.getNewPlayerYPositionOnPlatform(
       platforms,
-      yPrev,
+      yNew,
     );
-    if (newLandingPlatformY !== null) {
-      this.y = newLandingPlatformY;
+    if (newPlayerYPositionOnPlatform !== null) {
+      // set new player position on platform
+      this.x = xNew;
+      this.y = newPlayerYPositionOnPlatform;
       this.yVelocity = 0;
       this.isJumping = false;
+    } else {
+      // otherwise, set new player position based on velocity
+      this.y = yNew;
+      this.x = xNew;
     }
-
-    // ensure this.y does not go past the platform floor and reset gravity velocity
-    // if (this.y > FAKE_FLOOR_Y) {
-    //   this.y = FAKE_FLOOR_Y;
-    //   this.yVelocity = 0;
-    //   this.isJumping = false;
-    // }
   }
 }
 
