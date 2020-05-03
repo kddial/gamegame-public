@@ -41,60 +41,78 @@ class Player {
     };
   }
 
+  // Function returns true if standing on a platform based on
+  // given player position (x, y). Function will also calculate
+  // if a player is going to fall onto a platform.
+  getIsStandingOnPlatform(
+    platformInstance,
+    xPlayer,
+    yPlayer,
+    yNewPlayer = yPlayer,
+  ) {
+    // player hit box values
+    const playerXLeft = xPlayer + this.xHitBoxLocal;
+    const playerXRight = xPlayer + this.xHitBoxLocal + this.widthHitBox;
+    const isPlayerFalling = yPlayer < yNewPlayer;
+    const playerYBottom = yPlayer + this.yHitBoxLocal + this.heightHitBox;
+    const newPlayerYBottom = yNewPlayer + this.yHitBoxLocal + this.heightHitBox;
+
+    // platform hitbox values
+    const platformYHitBox = platformInstance.yHitBox;
+    const platformXLeft = platformInstance.xHitBox;
+    const platformXRight =
+      platformInstance.xHitBox + platformInstance.widthHitBox;
+
+    // is standing on platfrom with respect to x (horizontally)
+    // true when (players right >= platform left AND players left <= platform right) (AABB collision)
+    const xIsStandingOnPlatform =
+      playerXRight >= platformXLeft && playerXLeft <= platformXRight;
+
+    // is standing on platform with respect to y (vertically)
+    let yIsStandingOnPlatform;
+    if (isPlayerFalling) {
+      // platform y must be inbetween payers previous y and new y
+      yIsStandingOnPlatform =
+        playerYBottom <= platformYHitBox && platformYHitBox <= newPlayerYBottom;
+    } else {
+      yIsStandingOnPlatform = playerYBottom === platformYHitBox;
+    }
+
+    return xIsStandingOnPlatform && yIsStandingOnPlatform;
+  }
+
   // Function returns a new y pixel coordinate if player is landing on a platform
   // based on its current (x, y) position, and new (x, y) position.
-  // Two conditions must be met for landing on a platform:
-  //
-  // 1) If any platform is in inbetween the two y positions
-  //
-  // 2) If    players right >= platform left
-  //          AND
-  //          players left <= platform right
-  //
-  // When both conditions are met, then we return the platforms y position
-  // that the player.y should be set to.
-
-  // If the conditions are not met, we return 'null' as we do not
-  // expect to land on a platform.
+  // Return 'null' if we are not landing on a platform.
   getNewPlayerYPositionOnPlatform(platforms, xNew, yNew) {
     const { instances: platformsInstances } = platforms;
 
-    // y related values
-    const isFalling = this.y < yNew;
-    const currentPlayerYBottom = this.y + this.yHitBoxLocal + this.heightHitBox;
-    const newPlayerYBottom = yNew + this.yHitBoxLocal + this.heightHitBox;
-
-    // x related values
-    const newPlayerXLeft = xNew + this.xHitBoxLocal;
-    const newPlayerXRight = xNew + this.xHitBoxLocal + this.widthHitBox;
-
     for (let i = 0; i < platformsInstances.length; i++) {
+      const isStandingOnPlatform = this.getIsStandingOnPlatform(
+        platformsInstances[i],
+        xNew,
+        this.y,
+        yNew,
+      );
       const platformYHitBox = platformsInstances[i].yHitBox;
-      const platformXLeft = platformsInstances[i].xHitBox;
-      const platformXRight =
-        platformsInstances[i].xHitBox + platformsInstances[i].widthHitBox;
 
-      // standing on platform with respect to y (vertically)
-      const yIsStandingOnPlatform =
-        currentPlayerYBottom <= platformYHitBox &&
-        platformYHitBox <= newPlayerYBottom;
-
-      // stadning on platfrom with respect to x (horizontally)
-      const xIsStandingOnPlatform =
-        newPlayerXRight >= platformXLeft && newPlayerXLeft <= platformXRight;
-
-      if (
-        // y related conditions
-        isFalling &&
-        yIsStandingOnPlatform &&
-        xIsStandingOnPlatform
-      ) {
+      if (isStandingOnPlatform) {
         // player has fallen onto a plaform, return its new y position
         return platformYHitBox - this.yHitBoxLocal - this.heightHitBox;
       }
     }
     // player did not fall on a new platform, return null
     return null;
+  }
+
+  getIsPlayerStandingOnAnyPlatform(platforms) {
+    const { instances: platformsInstances } = platforms;
+    for (let i = 0; i < platformsInstances.length; i++) {
+      if (this.getIsStandingOnPlatform(platformsInstances[i], this.x, this.y)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   step(platforms) {
@@ -117,8 +135,13 @@ class Player {
       window.gamegame.resetJumpKeyDownForNextFrame();
     }
 
-    // apply gravity to yVelocity only if player is jumping
-    if (this.isJumping === true) {
+    // apply gravity to yVelocity if:
+    // - player is jumping OR
+    // - player is not standing on a platform
+    if (
+      this.isJumping === true ||
+      this.getIsPlayerStandingOnAnyPlatform(platforms) === false
+    ) {
       this.yVelocity += GRAVITY_Y_VELOCITY;
       this.pose = JUMP;
     }
@@ -126,13 +149,13 @@ class Player {
     // calculate new positions
     const xNew = this.x + this.xVelocity;
     const yNew = this.y + this.yVelocity;
+    const isPlayerFalling = this.y < yNew;
 
     // calculate if about to land on a platform
-    const newPlayerYPositionOnPlatform = this.getNewPlayerYPositionOnPlatform(
-      platforms,
-      xNew,
-      yNew,
-    );
+    const newPlayerYPositionOnPlatform = isPlayerFalling
+      ? this.getNewPlayerYPositionOnPlatform(platforms, xNew, yNew)
+      : null;
+
     if (newPlayerYPositionOnPlatform !== null) {
       // set new player position on platform
       this.x = xNew;
