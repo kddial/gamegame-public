@@ -25,7 +25,7 @@ class Platforms {
         'floor-four',
       ),
       new Platform(PLATFORM_SPRITE_W, 80, 100, 'platform-one'),
-      new Platform(0, 0, 100, 'test-platform-one'),
+      new Platform(50, 20, 100, 'test-platform-one'),
     ];
   }
 }
