@@ -24,8 +24,8 @@ class Platforms {
         PLATFORM_SPRITE_W,
         'floor-four',
       ),
-      new Platform(PLATFORM_SPRITE_W, 80, 100, 'platform-one'),
-      new Platform(50, 20, 100, 'test-platform-one'),
+      new Platform(200, 80, 100, 'platform-one'),
+      new Platform(60, 20, 100, 'platform-two'),
     ];
   }
 }
