@@ -1,6 +1,6 @@
 const CONSTANTS = {
   // debug variables
-  SHOW_HIT_BOX: true,
+  SHOW_HIT_BOX: false,
   SHOW_SPRITE_BOX: false, // depends on SHOW_HIT_BOX being true
 
   HIT_BOX_COLOR: 'red',
