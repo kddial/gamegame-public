@@ -30,11 +30,13 @@ const CONSTANTS = {
   RUN_X_VELOCITY: 2,
   JUMP_Y_VELOCITY: -8,
   GRAVITY_Y_VELOCITY: 0.5,
-  FAKE_FLOOR_Y: 140, // TODO: needs to hit a block, then stop going down
 
   // player sprite dimensions
   PLAYER_SPRITE_W: 50,
   PLAYER_SPRITE_H: 37,
+
+  // platform floor y
+  PLATFORM_FLOOR_Y: 550,
 
   // platform sprite dimensions
   PLATFORM_SPRITE_W: 200,

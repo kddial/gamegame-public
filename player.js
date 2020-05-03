@@ -7,7 +7,7 @@ const {
   RUN_X_VELOCITY,
   JUMP_Y_VELOCITY,
   GRAVITY_Y_VELOCITY,
-  FAKE_FLOOR_Y,
+  PLATFORM_FLOOR_Y,
 } = window.gamegame.CONSTANTS;
 
 class Player {
