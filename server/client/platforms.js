@@ -14,7 +14,7 @@ class Platforms {
       new Platform(500, 300, 20, 'stage-2-2'),
       new Platform(440, 250, 20, 'stage-2-3'),
       new Platform(370, 200, 20, 'stage-2-4'),
-      new Platform(290, 150, 20, 'stage-2-5'),
+      new Platform(293, 150, 20, 'stage-2-5'),
 
       // floor instances
       new Platform(0, PLATFORM_FLOOR_Y, PLATFORM_SPRITE_W, 'floor-one'),
