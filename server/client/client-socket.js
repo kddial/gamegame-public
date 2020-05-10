@@ -112,19 +112,6 @@ class ClientSocket {
     const { x, y, pose, horizontalScale } = player;
     const socketMessage = `${MSG_PLAYER}${MSG_TYPE_DELIM}${x}__${y}__${pose}__${horizontalScale}__${this.id}`;
     this.send(socketMessage);
-
-    // premature optimization !! might delete later
-    // dont spam the server with results every frame
-    // send at every 10 frames instead
-    // const sendEveryNFrame = 1;
-    // if (this.frameCounter === 0) {
-    //   this.send(socketMessage);
-    //   this.frameCounter++;
-    // } else if (this.frameCounter === sendEveryNFrame) {
-    //   this.frameCounter = 0;
-    // } else {
-    //   this.frameCounter++;
-    // }
   };
 }
 
