@@ -56,7 +56,7 @@ function drawBorderRect(ctx, x, y, width, height, color) {
   ctx.stroke();
 }
 
-// HACKY
+// TODO HACKY
 // initialize use of window.gamegame exploit to share things through files
 window.gamegame = {
   classes: {},

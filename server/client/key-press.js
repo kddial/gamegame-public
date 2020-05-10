@@ -12,7 +12,7 @@ const {
 // define glocal variables used in this file
 const _keyPress = {};
 let _playerButtonState;
-//
+let _shouldPreventContinuousJump = false;
 
 window.addEventListener('keydown', keyDownListener, false);
 function keyDownListener(event) {
@@ -21,7 +21,12 @@ function keyDownListener(event) {
 
 window.addEventListener('keyup', keyUpListener, false);
 function keyUpListener(event) {
-  _keyPress[event.key.toLowerCase()] = 0;
+  const eventKey = event.key.toLowerCase();
+  _keyPress[eventKey] = 0;
+
+  if (eventKey === 'arrowup' || eventKey === 'w' || eventKey === ' ') {
+    _shouldPreventContinuousJump = false;
+  }
 }
 
 // reset window key down buttons after 2 seconds
@@ -44,7 +49,10 @@ function buttonsPressed() {
   if (_keyPress['arrowleft'] || _keyPress['a']) {
     buttons.push(BUTTON_LEFT);
   }
-  if (_keyPress['arrowup'] || _keyPress['w'] || _keyPress[' ']) {
+  if (
+    _shouldPreventContinuousJump === false &&
+    (_keyPress['arrowup'] || _keyPress['w'] || _keyPress[' '])
+  ) {
     buttons.push(BUTTON_JUMP);
   }
   return buttons;
@@ -80,6 +88,7 @@ window.gamegame.getPlayerButtonState = getPlayerButtonState;
 
 // reset jump button key down in the immediate next frame
 function resetJumpKeyDownForNextFrame() {
+  _shouldPreventContinuousJump = true;
   _keyPress['arrowup'] = 0;
   _keyPress['w'] = 0;
   _keyPress[' '] = 0;
