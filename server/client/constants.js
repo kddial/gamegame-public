@@ -1,3 +1,5 @@
+import * as socketConstants from './socket-constants.js';
+
 const CONSTANTS = {
   // debug variables
   SHOW_HIT_BOX: false,
@@ -41,6 +43,9 @@ const CONSTANTS = {
   // platform sprite dimensions
   PLATFORM_SPRITE_W: 200,
   PLATFORM_SPRITE_H: 48,
+
+  // socket constants
+  ...socketConstants,
 };
 
 // helper functions
