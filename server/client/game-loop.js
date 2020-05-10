@@ -21,12 +21,12 @@ const GameLoop = ({
   platformSprite.drawPlatforms(platforms);
   SHOW_HIT_BOX && platformSprite.drawPlatformsHitBox(platforms);
 
-  // draw player
-  playerSprite.drawPlayerSprite(player);
-  SHOW_HIT_BOX && playerSprite.drawPlayerHitBox(player);
-
   // draw other players
   otherPlayersSprite.renderOtherPlayersSprite(clientSocket.otherPlayersInfo);
+
+  // draw player last (so it is on top of everything else)
+  playerSprite.drawPlayerSprite(player);
+  SHOW_HIT_BOX && playerSprite.drawPlayerHitBox(player);
 };
 
 export default GameLoop;
