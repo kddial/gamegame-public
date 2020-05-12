@@ -1,10 +1,12 @@
+import CONSTANTS from './constants.js';
 const {
   MSG_SELF,
   MSG_BROADCAST,
   MSG_PLAYER,
   MSG_TYPE_DELIM,
   MSG_DATA_DELIM,
-} = window.gamegame.CONSTANTS;
+  SHOW_SOCKET_INFO,
+} = CONSTANTS;
 
 const PORT = 2000; // web socket port
 const HOST = window.location.host;
@@ -75,7 +77,9 @@ class ClientSocket {
 
   processSelfMessage = (messageArray) => {
     this.id = messageArray[0];
-    document.getElementById('self-info').innerHTML = messageArray;
+    if (SHOW_SOCKET_INFO) {
+      document.getElementById('self-info').innerHTML = messageArray;
+    }
   };
 
   processBroadcastMessage = (messageArray) => {
@@ -105,7 +109,9 @@ class ClientSocket {
     }
     this.otherPlayersInfo = otherPlayersInfo;
 
-    document.getElementById('broadcast-info').innerHTML = messageArray;
+    if (SHOW_SOCKET_INFO) {
+      document.getElementById('broadcast-info').innerHTML = messageArray;
+    }
   };
 
   sendPlayerInfo = (player) => {

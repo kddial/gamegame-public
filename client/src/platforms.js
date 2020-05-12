@@ -1,5 +1,6 @@
-const { Platform } = window.gamegame.classes;
-const { PLATFORM_FLOOR_Y, PLATFORM_SPRITE_W } = window.gamegame.CONSTANTS;
+import Platform from './platform.js';
+import CONSTANTS from './constants.js';
+const { PLATFORM_FLOOR_Y, PLATFORM_SPRITE_W } = CONSTANTS;
 
 class Platforms {
   constructor() {

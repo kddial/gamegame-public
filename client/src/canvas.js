@@ -9,7 +9,7 @@ class Canvas {
   resetFrame() {
     const { width, height } = this;
     this.ctx.clearRect(0, 0, width, height);
-    this.ctx.fillStyle = 'orange';
+    this.ctx.fillStyle = '#d9ded7';
     this.ctx.fillRect(0, 0, width, height);
   }
 }

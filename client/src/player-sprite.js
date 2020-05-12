@@ -1,3 +1,4 @@
+import CONSTANTS, { drawBorderRect } from './constants.js';
 const {
   IMG_PATH_PREFIX,
   IDLE,
@@ -8,8 +9,7 @@ const {
   SPRITE_BOX_COLOR,
   HIT_BOX_COLOR,
   SHOW_SPRITE_BOX,
-} = window.gamegame.CONSTANTS;
-const { drawBorderRect } = window.gamegame;
+} = CONSTANTS;
 const IMG_SPRITE_PATH = 'adventurer-v1_5-sheet.png';
 
 const SPRITE_POSES = {

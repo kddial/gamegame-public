@@ -1,3 +1,8 @@
+import {
+  getPlayerButtonState,
+  resetJumpKeyDownForNextFrame,
+} from './key-press.js';
+import CONSTANTS from './constants.js';
 const {
   LEFT,
   RIGHT,
@@ -8,7 +13,7 @@ const {
   JUMP_Y_VELOCITY,
   GRAVITY_Y_VELOCITY,
   PLATFORM_FLOOR_Y,
-} = window.gamegame.CONSTANTS;
+} = CONSTANTS;
 
 class Player {
   constructor() {
@@ -116,7 +121,7 @@ class Player {
   }
 
   step(platforms) {
-    const playerButtonState = window.gamegame.getPlayerButtonState();
+    const playerButtonState = getPlayerButtonState();
     const direction = playerButtonState.includes(RIGHT) ? RIGHT : LEFT;
     this.horizontalScale = direction === RIGHT ? 1 : -1;
 
@@ -132,7 +137,7 @@ class Player {
     if (playerButtonState.includes(JUMP) && this.isJumping === false) {
       this.isJumping = true;
       this.yVelocity = JUMP_Y_VELOCITY;
-      window.gamegame.resetJumpKeyDownForNextFrame();
+      resetJumpKeyDownForNextFrame();
     }
 
     // apply gravity to yVelocity if:

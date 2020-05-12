@@ -1,4 +1,5 @@
-const { SHOW_HIT_BOX } = window.gamegame.CONSTANTS;
+import CONSTANTS from './constants.js';
+const { SHOW_HIT_BOX } = CONSTANTS;
 
 const GameLoop = ({
   canvas,

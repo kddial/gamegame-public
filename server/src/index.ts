@@ -8,7 +8,7 @@ const PORT = 2000;
 const http = createServer((req, res) => {
   // serve static html & image files
   return handler(req, res, {
-    public: path.join(__dirname, '..', 'client'),
+    public: path.join(__dirname, '..', '..', 'client'),
   });
 });
 
