@@ -14,8 +14,22 @@ const {
   GRAVITY_Y_VELOCITY,
   PLATFORM_FLOOR_Y,
 } = CONSTANTS;
+import Platform from './platform';
+import Platforms from './platforms';
 
 class Player {
+  x: number;
+  y: number;
+  xVelocity: number;
+  yVelocity: number;
+  pose: string;
+  horizontalScale: number;
+  isJumping: boolean;
+  xHitBoxLocal: number;
+  yHitBoxLocal: number;
+  widthHitBox: number;
+  heightHitBox: number;
+
   constructor() {
     this.x = 100;
     this.y = 140;
@@ -50,9 +64,9 @@ class Player {
   // given player position (x, y). Function will also calculate
   // if a player is going to fall onto a platform.
   getIsStandingOnPlatform(
-    platformInstance,
-    xPlayer,
-    yPlayer,
+    platformInstance: Platform,
+    xPlayer: number,
+    yPlayer: number,
     yNewPlayer = yPlayer,
   ) {
     // player hit box values
@@ -89,7 +103,11 @@ class Player {
   // Function returns a new y pixel coordinate if player is landing on a platform
   // based on its current (x, y) position, and new (x, y) position.
   // Return 'null' if we are not landing on a platform.
-  getNewPlayerYPositionOnPlatform(platforms, xNew, yNew) {
+  getNewPlayerYPositionOnPlatform(
+    platforms: Platforms,
+    xNew: number,
+    yNew: number,
+  ) {
     const { instances: platformsInstances } = platforms;
 
     for (let i = 0; i < platformsInstances.length; i++) {
@@ -110,7 +128,7 @@ class Player {
     return null;
   }
 
-  getIsPlayerStandingOnAnyPlatform(platforms) {
+  getIsPlayerStandingOnAnyPlatform(platforms: Platforms) {
     const { instances: platformsInstances } = platforms;
     for (let i = 0; i < platformsInstances.length; i++) {
       if (this.getIsStandingOnPlatform(platformsInstances[i], this.x, this.y)) {
@@ -120,7 +138,7 @@ class Player {
     return false;
   }
 
-  step(platforms) {
+  step(platforms: Platforms) {
     const playerButtonState = getPlayerButtonState();
     const direction = playerButtonState.includes(RIGHT) ? RIGHT : LEFT;
     this.horizontalScale = direction === RIGHT ? 1 : -1;

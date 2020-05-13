@@ -11,17 +11,17 @@ const {
 } = CONSTANTS;
 
 // define glocal variables used in this file
-const _keyPress = {};
-let _playerButtonState;
+const _keyPress: { [key: string]: number } = {};
+let _playerButtonState: string;
 let _shouldPreventContinuousJump = false;
 
 window.addEventListener('keydown', keyDownListener, false);
-function keyDownListener(event) {
+function keyDownListener(event: KeyboardEvent) {
   _keyPress[event.key.toLowerCase()] = Date.now();
 }
 
 window.addEventListener('keyup', keyUpListener, false);
-function keyUpListener(event) {
+function keyUpListener(event: KeyboardEvent) {
   const eventKey = event.key.toLowerCase();
   _keyPress[eventKey] = 0;
 
@@ -30,9 +30,8 @@ function keyUpListener(event) {
   }
 }
 
-// reset window key down buttons after 2 seconds
+// TODO reset window key down buttons after 2 seconds
 function reset_KeyPressedDown() {
-  // todo
   // fixes the problem when you hold down the button, then lose focus of window
 }
 
@@ -42,7 +41,7 @@ const BUTTON_RIGHT = 'BUTTON_RIGHT';
 const BUTTON_JUMP = 'BUTTON_JUMP';
 
 // find buttons pressed
-function buttonsPressed() {
+function buttonsPressed(): Array<string> {
   const buttons = [];
   if (_keyPress['arrowright'] || _keyPress['d']) {
     buttons.push(BUTTON_RIGHT);

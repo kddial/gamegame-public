@@ -3,6 +3,8 @@ import CONSTANTS from './constants.js';
 const { PLATFORM_FLOOR_Y, PLATFORM_SPRITE_W } = CONSTANTS;
 
 class Platforms {
+  instances: Array<Platform>;
+
   constructor() {
     this.instances = [
       // Platform args: (x, y, width, seed)

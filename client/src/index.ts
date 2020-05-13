@@ -7,6 +7,7 @@ import KeyPress from './key-press.js';
 import Platform from './platform.js';
 import Platforms from './platforms.js';
 import ClientSocket from './client-socket.js';
+import CONSTANTS from './constants.js';
 
 const canvasInstance = new Canvas();
 const playerInstance = new Player();

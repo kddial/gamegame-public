@@ -1,3 +1,4 @@
+import Player from './player';
 import CONSTANTS, { drawBorderRect } from './constants.js';
 const {
   IMG_PATH_PREFIX,
@@ -48,7 +49,15 @@ const SPRITE_POSES = {
 };
 
 class PlayerSprite {
-  constructor(ctx, loadedCallback) {
+  loaded: boolean;
+  img: HTMLImageElement;
+  ctx: CanvasRenderingContext2D;
+  pose: string;
+  poseIndex: number;
+  frameCounter: number;
+  horizontalScale: number;
+
+  constructor(ctx: CanvasRenderingContext2D, loadedCallback: () => void) {
     this.loaded = false;
     this.img = new Image();
     this.img.addEventListener('load', () => {
@@ -133,28 +142,28 @@ class PlayerSprite {
     drawPose();
   }
 
-  setSpritePose(pose) {
+  setSpritePose(pose: string) {
     if (pose !== this.pose) {
       this.pose = pose;
       this.poseIndex = 0;
     }
   }
 
-  setHorizontalScale(horizontalScale) {
+  setHorizontalScale(horizontalScale: number) {
     // render the sprite as is, or horizontally flipped
     if (horizontalScale !== this.horizontalScale) {
       this.horizontalScale = horizontalScale;
     }
   }
 
-  drawPlayerSprite(player) {
+  drawPlayerSprite(player: Player) {
     const { x, y, pose, horizontalScale } = player;
     this.setHorizontalScale(horizontalScale);
     this.setSpritePose(pose);
     this.drawSpritePose(x, y);
   }
 
-  drawPlayerHitBox(player) {
+  drawPlayerHitBox(player: Player) {
     const { x, y } = player;
     const {
       xHitBox,
@@ -188,12 +197,19 @@ class PlayerSprite {
 
 // Class to handle rendering other client player's sprites
 export class OtherPlayersSprite {
-  constructor(ctx) {
+  ctx: CanvasRenderingContext2D;
+  otherPlayersSpriteInstances: {
+    [key: string]: PlayerSprite;
+  };
+
+  constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx;
     this.otherPlayersSpriteInstances = {};
   }
 
-  renderOtherPlayersSprite = (otherPlayersInfoArray) => {
+  renderOtherPlayersSprite = (
+    otherPlayersInfoArray: Array<OtherPlayerInfo>,
+  ) => {
     otherPlayersInfoArray.forEach((otherPlayerInfo) => {
       const { x, y, pose, horizontalScale, id } = otherPlayerInfo;
 
@@ -202,12 +218,12 @@ export class OtherPlayersSprite {
       ) {
         // instance does not exist, create new
         const spriteInstance = new PlayerSprite(this.ctx, () => {});
-        spriteInstance.other = true;
+        spriteInstance.other = true; // TODO DELETE
         this.otherPlayersSpriteInstances[id] = spriteInstance;
       }
 
       const mockPlayer = { x, y, pose, horizontalScale };
-      this.otherPlayersSpriteInstances[id].drawPlayerSprite(mockPlayer);
+      this.otherPlayersSpriteInstances[id].drawPlayerSprite(mockPlayer); // TODO FIX MOCK TYPE
     });
 
     // remove any leftover sprite instances from this.otherPlayersSpriteInstances

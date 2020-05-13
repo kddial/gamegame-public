@@ -7,13 +7,19 @@ const {
   MSG_DATA_DELIM,
   SHOW_SOCKET_INFO,
 } = CONSTANTS;
+import Player from './player';
 
-const PORT = 2000; // web socket port
 const HOST = window.location.host;
 const PING = 57;
-const PONG = new Uint8Array(['A'.charCodeAt()]);
+const PONG = new Uint8Array(['A'.charCodeAt(0)]);
 
 class ClientSocket {
+  socket: WebSocket;
+  isConnected: boolean;
+  frameCounter: number;
+  id: string;
+  otherPlayersInfo: Array<OtherPlayerInfo>;
+
   constructor() {
     this.socket = new WebSocket(`ws://${HOST}`);
     this.socket.binaryType = 'arraybuffer';
@@ -28,30 +34,30 @@ class ClientSocket {
     this.otherPlayersInfo = [];
   }
 
-  send = (message) => {
+  send = (message: string | Uint8Array) => {
     if (this.socket && this.isConnected) {
       this.socket.send(message);
     }
   };
 
-  onOpen = (event) => {
+  onOpen = () => {
     console.log('-- on open');
     this.isConnected = true;
   };
 
-  onError = (err) => {
+  onError = (err: any) => {
     console.error(err);
     this.isConnected = false;
     this.socket = null;
   };
 
-  onClose = (event) => {
+  onClose = () => {
     console.log('-- on close');
     this.isConnected = false;
     this.socket = null;
   };
 
-  onMessage = (event) => {
+  onMessage = (event: any) => {
     const data = event.data;
 
     // server has ping me(client), i must pong back to server.
@@ -75,14 +81,14 @@ class ClientSocket {
     }
   };
 
-  processSelfMessage = (messageArray) => {
+  processSelfMessage = (messageArray: Array<string>) => {
     this.id = messageArray[0];
     if (SHOW_SOCKET_INFO) {
-      document.getElementById('self-info').innerHTML = messageArray;
+      document.getElementById('self-info').innerHTML = messageArray.toString();
     }
   };
 
-  processBroadcastMessage = (messageArray) => {
+  processBroadcastMessage = (messageArray: Array<string>) => {
     // get list of other players info
     // messageArray e.g. ['MSG_PLAYER', 'x__y__pose__scale', 'MSG_PLAYER', 'x__y__pose__scale', ...]
     const otherPlayersInfo = [];
@@ -110,11 +116,13 @@ class ClientSocket {
     this.otherPlayersInfo = otherPlayersInfo;
 
     if (SHOW_SOCKET_INFO) {
-      document.getElementById('broadcast-info').innerHTML = messageArray;
+      document.getElementById(
+        'broadcast-info',
+      ).innerHTML = messageArray.toString();
     }
   };
 
-  sendPlayerInfo = (player) => {
+  sendPlayerInfo = (player: Player) => {
     const { x, y, pose, horizontalScale } = player;
     const socketMessage = `${MSG_PLAYER}${MSG_TYPE_DELIM}${x}__${y}__${pose}__${horizontalScale}__${this.id}`;
     this.send(socketMessage);

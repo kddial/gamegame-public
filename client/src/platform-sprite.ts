@@ -7,12 +7,17 @@ const {
   SPRITE_BOX_COLOR,
   SHOW_SPRITE_BOX,
 } = CONSTANTS;
+import Platforms from './platforms';
 
 import { drawBorderRect } from './constants.js';
 const IMG_SPRITE_PATH = 'platform_v1.1.png';
 
 class PlatformSprite {
-  constructor(ctx) {
+  loaded: boolean;
+  img: HTMLImageElement;
+  ctx: CanvasRenderingContext2D;
+
+  constructor(ctx: CanvasRenderingContext2D) {
     this.loaded = false;
     this.img = new Image();
     this.img.addEventListener('load', () => {
@@ -47,16 +52,16 @@ class PlatformSprite {
     );
   }
 
-  drawPlatforms(platforms) {
+  drawPlatforms(platforms: Platforms) {
     const { instances } = platforms;
 
     instances.forEach((platformInstance) => {
-      const { x, y, width, spriteSeed } = platformInstance;
+      const { x, y, width } = platformInstance;
       this.drawImage(0, 0, x, y, width);
     });
   }
 
-  drawPlatformsHitBox(platforms) {
+  drawPlatformsHitBox(platforms: Platforms) {
     const { instances } = platforms;
     instances.forEach((platformInstance) => {
       const { x, y, width, xHitBox, yHitBox, widthHitBox } = platformInstance;
