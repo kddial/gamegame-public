@@ -163,6 +163,17 @@ class PlayerSprite {
     this.drawSpritePose(x, y);
   }
 
+  drawMockPlayerSprite(
+    x: number,
+    y: number,
+    pose: string,
+    horizontalScale: number,
+  ) {
+    this.setHorizontalScale(horizontalScale);
+    this.setSpritePose(pose);
+    this.drawSpritePose(x, y);
+  }
+
   drawPlayerHitBox(player: Player) {
     const { x, y } = player;
     const {
@@ -218,12 +229,15 @@ export class OtherPlayersSprite {
       ) {
         // instance does not exist, create new
         const spriteInstance = new PlayerSprite(this.ctx, () => {});
-        spriteInstance.other = true; // TODO DELETE
         this.otherPlayersSpriteInstances[id] = spriteInstance;
       }
 
-      const mockPlayer = { x, y, pose, horizontalScale };
-      this.otherPlayersSpriteInstances[id].drawPlayerSprite(mockPlayer); // TODO FIX MOCK TYPE
+      this.otherPlayersSpriteInstances[id].drawMockPlayerSprite(
+        x,
+        y,
+        pose,
+        horizontalScale,
+      );
     });
 
     // remove any leftover sprite instances from this.otherPlayersSpriteInstances
