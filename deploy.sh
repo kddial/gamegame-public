@@ -1,6 +1,7 @@
 #!/bin/bash
 
 git pull
+./gitlog.sh
 cd server
 yarn build
 pm2 stop app
