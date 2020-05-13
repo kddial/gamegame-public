@@ -20,15 +20,22 @@ cd dist
 node index.js
 ```
 
+To deploy on digital ocean, ssh into the machine, and run the deploy script.
+It will pull the latest, build client and server code, close and delete the currently running server using `pm2`, and start a new server with the name `app`.
+
+```
+./deploy.sh
+```
+
 # project
 
 I want Gamegame to be an online virtual hangout joint, for casual chit chat. Allow you to talk to people based on spatial distance (2d in this case).
 
 Backend is a nodejs server which holds websocket connections with each client (browser). backend is in typescript.
-In directory `/server/src`.
+In directory `/server`.
 
-Front end is html canvas that renders the player and handles the physics and collisions. frontend is in vanilla js.
-In directory `/server/client` which is served as static files from the server.
+Front end is html canvas that renders the player and handles the physics and collisions. frontend is in typescript.
+In directory `/client` which is served as static files from the server.
 
 # credits
 
