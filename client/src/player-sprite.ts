@@ -1,4 +1,4 @@
-import Player from './player';
+import Player from './player.js';
 import CONSTANTS, { drawBorderRect } from './constants.js';
 const {
   IMG_PATH_PREFIX,

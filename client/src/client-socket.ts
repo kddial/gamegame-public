@@ -7,7 +7,7 @@ const {
   MSG_DATA_DELIM,
   SHOW_SOCKET_INFO,
 } = CONSTANTS;
-import Player from './player';
+import Player from './player.js';
 
 const HOST = window.location.host;
 const PING = 57;

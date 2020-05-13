@@ -1,4 +1,4 @@
-import * as socketConstants from './socket-constants.js';
+import SOCKET_CONSTANTS from './socket-constants.js';
 
 const CONSTANTS = {
   // debug variables
@@ -46,7 +46,7 @@ const CONSTANTS = {
   PLATFORM_SPRITE_H: 48,
 
   // socket constants
-  ...socketConstants,
+  ...SOCKET_CONSTANTS,
 };
 
 // helper functions

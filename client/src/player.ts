@@ -14,8 +14,8 @@ const {
   GRAVITY_Y_VELOCITY,
   PLATFORM_FLOOR_Y,
 } = CONSTANTS;
-import Platform from './platform';
-import Platforms from './platforms';
+import Platform from './platform.js';
+import Platforms from './platforms.js';
 
 class Player {
   x: number;

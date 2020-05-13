@@ -1,11 +1,8 @@
 import { formatPlayerInfo, formatSelfInfo } from './formatters';
 import { WebSocket } from '@clusterws/cws';
 import ConnectedGameSockets from './connected-game-sockets';
-import {
-  MSG_PLAYER,
-  MSG_TYPE_DELIM,
-  MSG_DATA_DELIM,
-} from './socket-constants.js';
+import SOCKET_CONSTANTS from './socket-constants.js';
+const { MSG_PLAYER, MSG_TYPE_DELIM, MSG_DATA_DELIM } = SOCKET_CONSTANTS;
 
 class GameSocket {
   connectedGameSockets: ConnectedGameSockets;

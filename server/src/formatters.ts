@@ -1,9 +1,10 @@
-import {
+import SOCKET_CONSTANTS from './socket-constants.js';
+const {
   MSG_SELF,
   MSG_PLAYER,
   MSG_BROADCAST,
   MSG_TYPE_DELIM,
-} from './socket-constants';
+} = SOCKET_CONSTANTS;
 
 export const formatPlayerInfo = (
   x: number,
