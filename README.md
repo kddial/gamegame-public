@@ -1,13 +1,26 @@
 # dev and build
 
-To run locally
+To run dev locally
 
 ```
+// on server
 cd server
 yarn install
 yarn start
 
 go to http://localhost:2000
+```
+
+```
+// on client only
+cd client
+yarn install
+yarn start
+
+open a new terminal tab
+serve .      (this is a global npm package)
+
+go to http://localhost:5000
 ```
 
 To build for deployment
