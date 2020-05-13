@@ -1,4 +1,4 @@
-import SOCKET_CONSTANTS from './socket-constants.js';
+import SOCKET_CONSTANTS from './socket-constants';
 const {
   MSG_SELF,
   MSG_PLAYER,
