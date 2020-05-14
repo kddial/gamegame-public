@@ -157,10 +157,11 @@ class PlayerSprite {
   }
 
   drawPlayerSprite(player: Player) {
-    const { x, y, pose, horizontalScale } = player;
+    const { x, y, pose, horizontalScale, name } = player;
     this.setHorizontalScale(horizontalScale);
     this.setSpritePose(pose);
     this.drawSpritePose(x, y);
+    this.drawPlayerName(x, y, name);
   }
 
   drawMockPlayerSprite(
@@ -203,6 +204,12 @@ class PlayerSprite {
       heightHitBox,
       HIT_BOX_COLOR,
     );
+  }
+
+  drawPlayerName(x: number, y: number, name: string) {
+    this.ctx.font = 'normal 14px monospace';
+    this.ctx.fillStyle = 'black';
+    this.ctx.fillText(name, x, y);
   }
 }
 

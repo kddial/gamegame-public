@@ -16,6 +16,10 @@ const {
 } = CONSTANTS;
 import Platform from './platform.js';
 import Platforms from './platforms.js';
+import {
+  getNameFromSessionStorage,
+  saveNameIntoSessionStorage,
+} from './sessionStorage.js';
 
 class Player {
   x: number;
@@ -29,6 +33,7 @@ class Player {
   yHitBoxLocal: number;
   widthHitBox: number;
   heightHitBox: number;
+  name: string;
 
   constructor() {
     this.x = 100;
@@ -44,6 +49,20 @@ class Player {
     this.yHitBoxLocal = 12;
     this.widthHitBox = 10;
     this.heightHitBox = 24;
+
+    this.name = '';
+    this.initPlayerNameFromSessionStorage();
+  }
+
+  initPlayerNameFromSessionStorage() {
+    const sessionStorageName = getNameFromSessionStorage();
+    if (sessionStorageName) {
+      this.name = sessionStorageName;
+      const nameInput = <HTMLInputElement>(
+        document.getElementById('player-name-input')
+      );
+      nameInput.value = sessionStorageName;
+    }
   }
 
   // TODO: i might have to make hit boxes PER pose frame
@@ -138,6 +157,17 @@ class Player {
     return false;
   }
 
+  getNameFromInput() {
+    const nameInput = <HTMLInputElement>(
+      document.getElementById('player-name-input')
+    );
+    const name = nameInput.value;
+    if (name && this.name !== name) {
+      this.name = name;
+      saveNameIntoSessionStorage(name);
+    }
+  }
+
   step(platforms: Platforms) {
     const playerButtonState = getPlayerButtonState();
     const direction = playerButtonState.includes(RIGHT) ? RIGHT : LEFT;
@@ -190,6 +220,9 @@ class Player {
       this.y = yNew;
       this.x = xNew;
     }
+
+    // fetch player name
+    this.getNameFromInput();
   }
 }
 

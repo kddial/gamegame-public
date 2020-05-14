@@ -4,4 +4,9 @@
 
 body {
   background: #d9ded8;
+  font-family: monospace;
+}
+
+input {
+  font-family: monospace;
 }

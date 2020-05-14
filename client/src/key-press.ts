@@ -15,8 +15,18 @@ const _keyPress: { [key: string]: number } = {};
 let _playerButtonState: string;
 let _shouldPreventContinuousJump = false;
 
+// Function to detect if document is focused/active on
+// inputs, so we do not register them as player's movement.
+function areInputsActive() {
+  const nameInput = document.getElementById('player-name-input');
+  return document.activeElement === nameInput;
+}
+
 window.addEventListener('keydown', keyDownListener, false);
 function keyDownListener(event: KeyboardEvent) {
+  if (areInputsActive() === true) {
+    return;
+  }
   _keyPress[event.key.toLowerCase()] = Date.now();
 }
 
