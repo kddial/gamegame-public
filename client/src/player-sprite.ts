@@ -1,5 +1,6 @@
 import Player from './player.js';
-import CONSTANTS, { drawBorderRect } from './constants.js';
+import { drawBorderRect, drawFillRect } from './draw-helpers.js';
+import CONSTANTS from './constants.js';
 const {
   IMG_PATH_PREFIX,
   IDLE,
@@ -207,9 +208,28 @@ class PlayerSprite {
   }
 
   drawPlayerName(x: number, y: number, name: string) {
+    if (!!name === false) {
+      return;
+    }
+    const LETTER_WIDTH = 8.5; // based on monospaced 14px
+    const rectWidth = name.length * LETTER_WIDTH;
+
+    // find the difference between the two mids, and add that to x
+    // to render the text in the center below the sprite
+    const diffInX = PLAYER_SPRITE_W / 2 - rectWidth / 2;
+    const xCentered = x + diffInX;
+    const yUnderPlayer = y + PLAYER_SPRITE_H + 2;
+
+    // draw background white rect under text with opacity
+    this.ctx.globalAlpha = 0.9;
+    drawFillRect(this.ctx, xCentered, yUnderPlayer, rectWidth, 14, 'white');
+    this.ctx.globalAlpha = 1.0;
+
+    // draw text
     this.ctx.font = 'normal 14px monospace';
     this.ctx.fillStyle = 'black';
-    this.ctx.fillText(name, x, y);
+    this.ctx.textBaseline = 'top';
+    this.ctx.fillText(name, xCentered, yUnderPlayer);
   }
 }
 

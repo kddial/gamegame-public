@@ -8,8 +8,8 @@ const {
   SHOW_SPRITE_BOX,
 } = CONSTANTS;
 import Platforms from './platforms';
+import { drawBorderRect } from './draw-helpers.js';
 
-import { drawBorderRect } from './constants.js';
 const IMG_SPRITE_PATH = 'platform_v1.1.png';
 
 class PlatformSprite {

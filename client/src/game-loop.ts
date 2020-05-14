@@ -34,6 +34,7 @@ const GameLoop = ({
   canvas.resetFrame();
 
   // draw platforms
+  Platforms.drawBottomCanvasBg(canvas.ctx);
   platformSprite.drawPlatforms(platforms);
   SHOW_HIT_BOX && platformSprite.drawPlatformsHitBox(platforms);
 

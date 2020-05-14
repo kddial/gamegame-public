@@ -1,6 +1,7 @@
 import Platform from './platform.js';
 import CONSTANTS from './constants.js';
-const { PLATFORM_FLOOR_Y, PLATFORM_SPRITE_W } = CONSTANTS;
+import { drawFillRect } from './draw-helpers.js';
+const { PLATFORM_FLOOR_Y, PLATFORM_SPRITE_W, PLATFORM_SPRITE_H } = CONSTANTS;
 
 class Platforms {
   instances: Array<Platform>;
@@ -40,6 +41,18 @@ class Platforms {
         'floor-four',
       ),
     ];
+  }
+
+  // Fill the bottom of the canvas with a solid background color
+  static drawBottomCanvasBg(ctx: CanvasRenderingContext2D) {
+    drawFillRect(
+      ctx,
+      0,
+      PLATFORM_FLOOR_Y + PLATFORM_SPRITE_H,
+      800, // width
+      20, // height
+      '#303544',
+    );
   }
 }
 
