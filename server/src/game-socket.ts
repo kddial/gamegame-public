@@ -2,7 +2,12 @@ import { formatPlayerInfo, formatSelfInfo } from './formatters';
 import { WebSocket } from '@clusterws/cws';
 import ConnectedGameSockets from './connected-game-sockets';
 import SOCKET_CONSTANTS from './socket-constants';
-const { MSG_PLAYER, MSG_TYPE_DELIM, MSG_DATA_DELIM } = SOCKET_CONSTANTS;
+const {
+  MSG_PLAYER,
+  MSG_TYPE_DELIM,
+  MSG_DATA_DELIM,
+  MSG_SET_NAME,
+} = SOCKET_CONSTANTS;
 
 class GameSocket {
   connectedGameSockets: ConnectedGameSockets;
@@ -12,6 +17,7 @@ class GameSocket {
   y: number;
   pose: string;
   horizontalScale: number;
+  playerName: string;
 
   constructor(
     connectedGameSockets: ConnectedGameSockets,
@@ -21,6 +27,7 @@ class GameSocket {
     this.socket = serverSocket;
     this.id = id;
     this.connectedGameSockets = connectedGameSockets;
+    this.playerName = '';
 
     this.socket.on('close', this.onSocketClose);
     this.socket.on('message', this.onSocketMessage);
@@ -48,6 +55,7 @@ class GameSocket {
       this.pose,
       this.horizontalScale,
       this.id,
+      this.playerName,
     );
   };
 
@@ -69,6 +77,8 @@ class GameSocket {
 
       // broadcast new info to all clients
       this.connectedGameSockets.broadcastAllGameSocketsInfo();
+    } else if (messageType === MSG_SET_NAME) {
+      this.playerName = messageData;
     }
   };
 }

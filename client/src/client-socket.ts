@@ -6,6 +6,7 @@ const {
   MSG_TYPE_DELIM,
   MSG_DATA_DELIM,
   SHOW_SOCKET_INFO,
+  MSG_SET_NAME,
 } = CONSTANTS;
 import Player from './player.js';
 
@@ -19,6 +20,7 @@ class ClientSocket {
   frameCounter: number;
   id: string;
   otherPlayersInfo: Array<OtherPlayerInfo>;
+  messagesQueue: Array<string | Uint8Array>;
 
   constructor() {
     this.socket = new WebSocket(`ws://${HOST}`);
@@ -32,17 +34,28 @@ class ClientSocket {
     this.frameCounter = 0;
     this.id;
     this.otherPlayersInfo = [];
+    this.messagesQueue = []; // messages to send once socket is connected
   }
 
   send = (message: string | Uint8Array) => {
     if (this.socket && this.isConnected) {
       this.socket.send(message);
+    } else {
+      console.log(
+        'Message is added to queue to send on socket connection:',
+        message,
+      );
+      this.messagesQueue.push(message);
     }
   };
 
   onOpen = () => {
     console.log('-- on open');
     this.isConnected = true;
+
+    this.messagesQueue.forEach((message) => {
+      this.send(message);
+    });
   };
 
   onError = (err: any) => {
@@ -97,7 +110,7 @@ class ClientSocket {
     while (i < messageArray.length) {
       if (messageArray[i] === MSG_PLAYER) {
         i++;
-        const [x, y, pose, horizontalScale, id] = messageArray[i].split(
+        const [x, y, pose, horizontalScale, id, name] = messageArray[i].split(
           MSG_DATA_DELIM,
         );
 
@@ -108,6 +121,7 @@ class ClientSocket {
             pose,
             horizontalScale: parseInt(horizontalScale),
             id,
+            name,
           });
         }
       }
@@ -125,6 +139,11 @@ class ClientSocket {
   sendPlayerInfo = (player: Player) => {
     const { x, y, pose, horizontalScale } = player;
     const socketMessage = `${MSG_PLAYER}${MSG_TYPE_DELIM}${x}__${y}__${pose}__${horizontalScale}__${this.id}`;
+    this.send(socketMessage);
+  };
+
+  sendPlayerName = (name: string) => {
+    const socketMessage = `${MSG_SET_NAME}${MSG_TYPE_DELIM}${name}`;
     this.send(socketMessage);
   };
 }

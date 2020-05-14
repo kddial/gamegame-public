@@ -170,10 +170,12 @@ class PlayerSprite {
     y: number,
     pose: string,
     horizontalScale: number,
+    name: string,
   ) {
     this.setHorizontalScale(horizontalScale);
     this.setSpritePose(pose);
     this.drawSpritePose(x, y);
+    this.drawPlayerName(x, y, name);
   }
 
   drawPlayerHitBox(player: Player) {
@@ -249,7 +251,7 @@ export class OtherPlayersSprite {
     otherPlayersInfoArray: Array<OtherPlayerInfo>,
   ) => {
     otherPlayersInfoArray.forEach((otherPlayerInfo) => {
-      const { x, y, pose, horizontalScale, id } = otherPlayerInfo;
+      const { x, y, pose, horizontalScale, id, name } = otherPlayerInfo;
 
       if (
         Object.keys(this.otherPlayersSpriteInstances).includes(id) === false
@@ -264,6 +266,7 @@ export class OtherPlayersSprite {
         y,
         pose,
         horizontalScale,
+        name,
       );
     });
 

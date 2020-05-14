@@ -10,12 +10,12 @@ import ClientSocket from './client-socket.js';
 import CONSTANTS from './constants.js';
 
 const canvasInstance = new Canvas();
-const playerInstance = new Player();
+const clientSocketInstance = new ClientSocket();
+const playerInstance = new Player(clientSocketInstance);
 const platformSpriteInstance = new PlatformSprite(canvasInstance.ctx);
 const playerSpriteInstance = new PlayerSprite(canvasInstance.ctx, init);
 const otherPlayersSpriteInstance = new OtherPlayersSprite(canvasInstance.ctx);
 const platformsInstance = new Platforms();
-const clientSocketInstance = new ClientSocket();
 
 // step frame
 function step() {

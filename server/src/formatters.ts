@@ -12,8 +12,9 @@ export const formatPlayerInfo = (
   pose: string,
   horizontalScale: number,
   id: number,
+  playerName: string = '',
 ) => {
-  return `${MSG_PLAYER}${MSG_TYPE_DELIM}${x}__${y}__${pose}__${horizontalScale}__${id}${MSG_TYPE_DELIM}`;
+  return `${MSG_PLAYER}${MSG_TYPE_DELIM}${x}__${y}__${pose}__${horizontalScale}__${id}__${playerName}${MSG_TYPE_DELIM}`;
 };
 
 export const formatSelfInfo = (id: number) => {

@@ -20,6 +20,7 @@ import {
   getNameFromSessionStorage,
   saveNameIntoSessionStorage,
 } from './sessionStorage.js';
+import ClientSocket from './client-socket';
 
 class Player {
   x: number;
@@ -34,8 +35,9 @@ class Player {
   widthHitBox: number;
   heightHitBox: number;
   name: string;
+  clientSocket: ClientSocket;
 
-  constructor() {
+  constructor(clientSocket: ClientSocket) {
     this.x = 100;
     this.y = 140;
     this.xVelocity = 0;
@@ -50,6 +52,7 @@ class Player {
     this.widthHitBox = 10;
     this.heightHitBox = 24;
 
+    this.clientSocket = clientSocket;
     this.name = '';
     this.initPlayerNameFromSessionStorage();
   }
@@ -63,6 +66,7 @@ class Player {
       );
       nameInput.value = sessionStorageName;
     }
+    this.clientSocket.sendPlayerName(sessionStorageName);
   }
 
   // TODO: i might have to make hit boxes PER pose frame
@@ -165,6 +169,7 @@ class Player {
     if (name && this.name !== name) {
       this.name = name;
       saveNameIntoSessionStorage(name);
+      this.clientSocket.sendPlayerName(name);
     }
   }
 
