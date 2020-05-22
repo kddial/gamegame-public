@@ -4,7 +4,7 @@ import Player from './player.js';
 import Canvas from './canvas.js';
 import Platforms from './platforms.js';
 import ClientSocket from './client-socket.js';
-
+import KeyPress from './key-press.js';
 import CONSTANTS from './constants.js';
 const { SHOW_HIT_BOX } = CONSTANTS;
 
@@ -16,6 +16,7 @@ const GameLoop = ({
   platforms,
   platformSprite,
   clientSocket,
+  keyPress,
 }: {
   canvas: Canvas;
   player: Player;
@@ -24,10 +25,12 @@ const GameLoop = ({
   platforms: Platforms;
   platformSprite: PlatformSprite;
   clientSocket: ClientSocket;
+  keyPress: KeyPress;
 }) => {
   // update player positions
-  player.step(platforms);
-  // send updated player position to socket
+  player.step(platforms, keyPress);
+  // send updated player position & messages to socket
+  clientSocket.stepFrameCounter();
   clientSocket.sendPlayerInfo(player);
 
   //--- drawing ---
@@ -39,7 +42,11 @@ const GameLoop = ({
   SHOW_HIT_BOX && platformSprite.drawPlatformsHitBox(platforms);
 
   // draw other players
-  otherPlayersSprite.renderOtherPlayersSprite(clientSocket.otherPlayersInfo);
+  otherPlayersSprite.renderOtherPlayersSprite(
+    clientSocket.otherPlayersInfo,
+    clientSocket.otherPlayersNameById,
+    clientSocket.otherPlayersMessagesById,
+  );
 
   // draw player last (so it is on top of everything else)
   playerSprite.drawPlayerSprite(player);

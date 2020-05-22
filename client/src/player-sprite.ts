@@ -1,8 +1,9 @@
 import Player from './player.js';
 import { drawBorderRect, drawFillRect } from './draw-helpers.js';
 import CONSTANTS from './constants.js';
+import ImageLoader from './image-loader.js';
+
 const {
-  IMG_PATH_PREFIX,
   IDLE,
   RUN,
   JUMP,
@@ -12,7 +13,6 @@ const {
   HIT_BOX_COLOR,
   SHOW_SPRITE_BOX,
 } = CONSTANTS;
-const IMG_SPRITE_PATH = 'adventurer-v1_5-sheet.png';
 
 const SPRITE_POSES = {
   [IDLE]: {
@@ -50,7 +50,6 @@ const SPRITE_POSES = {
 };
 
 class PlayerSprite {
-  loaded: boolean;
   img: HTMLImageElement;
   ctx: CanvasRenderingContext2D;
   pose: string;
@@ -58,15 +57,8 @@ class PlayerSprite {
   frameCounter: number;
   horizontalScale: number;
 
-  constructor(ctx: CanvasRenderingContext2D, loadedCallback: () => void) {
-    this.loaded = false;
-    this.img = new Image();
-    this.img.addEventListener('load', () => {
-      console.log('player image loaded');
-      this.loaded = true;
-      loadedCallback();
-    });
-    this.img.src = IMG_PATH_PREFIX + IMG_SPRITE_PATH;
+  constructor(ctx: CanvasRenderingContext2D, imageLoader: ImageLoader) {
+    this.img = imageLoader.playerSpriteImg;
     this.ctx = ctx;
     this.pose = IDLE;
     this.poseIndex = 0;
@@ -75,8 +67,8 @@ class PlayerSprite {
   }
 
   drawImage(sourceXi = 0, sourceYi = 0, destX = 0, destY = 0) {
-    if (this.loaded === false) {
-      console.log('image not loaded yet');
+    if (!!this.img?.src === false) {
+      console.log('Player image not loaded yet');
       return;
     }
 
@@ -158,11 +150,16 @@ class PlayerSprite {
   }
 
   drawPlayerSprite(player: Player) {
-    const { x, y, pose, horizontalScale, name } = player;
+    const { x, y, pose, horizontalScale, name, messages } = player;
     this.setHorizontalScale(horizontalScale);
     this.setSpritePose(pose);
     this.drawSpritePose(x, y);
     this.drawPlayerName(x, y, name);
+    this.drawMessages(
+      x,
+      y,
+      messages.map((msg) => msg[1]), // only pass down the string values, ignore the timestamps
+    );
   }
 
   drawMockPlayerSprite(
@@ -171,11 +168,13 @@ class PlayerSprite {
     pose: string,
     horizontalScale: number,
     name: string,
+    messages: Array<string>,
   ) {
     this.setHorizontalScale(horizontalScale);
     this.setSpritePose(pose);
     this.drawSpritePose(x, y);
     this.drawPlayerName(x, y, name);
+    this.drawMessages(x, y, messages);
   }
 
   drawPlayerHitBox(player: Player) {
@@ -215,23 +214,71 @@ class PlayerSprite {
     }
     const LETTER_WIDTH = 8.5; // based on monospaced 14px
     const rectWidth = name.length * LETTER_WIDTH;
-
-    // find the difference between the two mids, and add that to x
-    // to render the text in the center below the sprite
-    const diffInX = PLAYER_SPRITE_W / 2 - rectWidth / 2;
-    const xCentered = x + diffInX;
+    const xDisplaced = this.calculateXDisplaced(x, rectWidth);
     const yUnderPlayer = y + PLAYER_SPRITE_H + 2;
 
     // draw background white rect under text with opacity
     this.ctx.globalAlpha = 0.9;
-    drawFillRect(this.ctx, xCentered, yUnderPlayer, rectWidth, 14, 'white');
+    drawFillRect(this.ctx, xDisplaced, yUnderPlayer, rectWidth, 14, 'white');
     this.ctx.globalAlpha = 1.0;
 
     // draw text
     this.ctx.font = 'normal 14px monospace';
     this.ctx.fillStyle = 'black';
     this.ctx.textBaseline = 'top';
-    this.ctx.fillText(name, xCentered, yUnderPlayer);
+    this.ctx.fillText(name, xDisplaced, yUnderPlayer);
+  }
+
+  // Must render rects as an X point. So we calculated how far
+  // want want to displace x to the left, so that the rectangle
+  // is rendered centered to the player
+  calculateXDisplaced(xPlayer: number, rectWidth: number) {
+    // find the difference between the two mids, and add that to x
+    // to render the text in the center below the sprite
+    const diffInX = PLAYER_SPRITE_W / 2 - rectWidth / 2;
+    const xDisplaced = xPlayer + diffInX;
+    return xDisplaced;
+  }
+
+  drawMessages(x: number, y: number, messages: Array<string>) {
+    if (messages.length === 0) {
+      return;
+    }
+
+    messages.forEach((messageText, i) => {
+      if (messageText.length === 0) {
+        return;
+      }
+      const horizontalPadding = 2;
+      const verticalPadding = 2;
+      const LETTER_WIDTH = 8.5; // based on monospaced 14px
+      const messageHeight = 14 + verticalPadding * 2;
+
+      const rectWidth = messageText.length * LETTER_WIDTH;
+      const xDisplaced = this.calculateXDisplaced(x, rectWidth);
+      const messageIndexMargin = messageHeight * (i + 1);
+      const yAbovePlayer = y - messageIndexMargin;
+
+      // draw background white rect under text with opacity
+      drawFillRect(
+        this.ctx,
+        xDisplaced - horizontalPadding,
+        yAbovePlayer,
+        rectWidth + horizontalPadding * 2,
+        messageHeight,
+        'white',
+      );
+
+      // draw text
+      this.ctx.font = 'normal 14px monospace';
+      this.ctx.fillStyle = 'black';
+      this.ctx.textBaseline = 'top';
+      this.ctx.fillText(
+        messageText,
+        xDisplaced,
+        yAbovePlayer + verticalPadding,
+      );
+    });
   }
 }
 
@@ -241,23 +288,29 @@ export class OtherPlayersSprite {
   otherPlayersSpriteInstances: {
     [key: string]: PlayerSprite;
   };
+  imageLoader: ImageLoader;
 
-  constructor(ctx: CanvasRenderingContext2D) {
+  constructor(ctx: CanvasRenderingContext2D, imageLoader: ImageLoader) {
     this.ctx = ctx;
     this.otherPlayersSpriteInstances = {};
+    this.imageLoader = imageLoader;
   }
 
   renderOtherPlayersSprite = (
     otherPlayersInfoArray: Array<OtherPlayerInfo>,
+    otherPlayersNameById: { [key: string]: string },
+    otherPlayersMessagesById: { [key: string]: Array<string> },
   ) => {
     otherPlayersInfoArray.forEach((otherPlayerInfo) => {
-      const { x, y, pose, horizontalScale, id, name } = otherPlayerInfo;
+      const { x, y, pose, horizontalScale, id } = otherPlayerInfo;
+      const playerName = otherPlayersNameById[id] ?? '';
+      const messages = otherPlayersMessagesById[id] ?? [];
 
       if (
         Object.keys(this.otherPlayersSpriteInstances).includes(id) === false
       ) {
         // instance does not exist, create new
-        const spriteInstance = new PlayerSprite(this.ctx, () => {});
+        const spriteInstance = new PlayerSprite(this.ctx, this.imageLoader);
         this.otherPlayersSpriteInstances[id] = spriteInstance;
       }
 
@@ -266,7 +319,8 @@ export class OtherPlayersSprite {
         y,
         pose,
         horizontalScale,
-        name,
+        playerName,
+        messages,
       );
     });
 

@@ -1,7 +1,4 @@
-import {
-  getPlayerButtonState,
-  resetJumpKeyDownForNextFrame,
-} from './key-press.js';
+import KeyPress from './key-press.js';
 import CONSTANTS from './constants.js';
 const {
   LEFT,
@@ -12,7 +9,7 @@ const {
   RUN_X_VELOCITY,
   JUMP_Y_VELOCITY,
   GRAVITY_Y_VELOCITY,
-  PLATFORM_FLOOR_Y,
+  PLAYER_NAME_INPUT_ID,
 } = CONSTANTS;
 import Platform from './platform.js';
 import Platforms from './platforms.js';
@@ -36,6 +33,7 @@ class Player {
   heightHitBox: number;
   name: string;
   clientSocket: ClientSocket;
+  messages: Array<[number, string]>;
 
   constructor(clientSocket: ClientSocket) {
     this.x = 100;
@@ -55,6 +53,7 @@ class Player {
     this.clientSocket = clientSocket;
     this.name = '';
     this.initPlayerNameFromSessionStorage();
+    this.messages = [];
   }
 
   initPlayerNameFromSessionStorage() {
@@ -62,11 +61,11 @@ class Player {
     if (sessionStorageName) {
       this.name = sessionStorageName;
       const nameInput = <HTMLInputElement>(
-        document.getElementById('player-name-input')
+        document.getElementById(PLAYER_NAME_INPUT_ID)
       );
       nameInput.value = sessionStorageName;
+      this.clientSocket.sendPlayerName(sessionStorageName);
     }
-    this.clientSocket.sendPlayerName(sessionStorageName);
   }
 
   // TODO: i might have to make hit boxes PER pose frame
@@ -163,7 +162,7 @@ class Player {
 
   getNameFromInput() {
     const nameInput = <HTMLInputElement>(
-      document.getElementById('player-name-input')
+      document.getElementById(PLAYER_NAME_INPUT_ID)
     );
     const name = nameInput.value;
     if (name && this.name !== name) {
@@ -173,8 +172,10 @@ class Player {
     }
   }
 
-  step(platforms: Platforms) {
-    const playerButtonState = getPlayerButtonState();
+  step(platforms: Platforms, keyPress: KeyPress) {
+    this.removeExpiredMessages();
+
+    const playerButtonState = keyPress.getPlayerButtonState();
     const direction = playerButtonState.includes(RIGHT) ? RIGHT : LEFT;
     this.horizontalScale = direction === RIGHT ? 1 : -1;
 
@@ -190,7 +191,7 @@ class Player {
     if (playerButtonState.includes(JUMP) && this.isJumping === false) {
       this.isJumping = true;
       this.yVelocity = JUMP_Y_VELOCITY;
-      resetJumpKeyDownForNextFrame();
+      keyPress.resetJumpKeyDownForNextFrame();
     }
 
     // apply gravity to yVelocity if:
@@ -228,6 +229,33 @@ class Player {
 
     // fetch player name
     this.getNameFromInput();
+  }
+
+  removeExpiredMessages() {
+    const EXPIRE_AFTER_MS = 8000; // milliseconds
+    let i = this.messages.length - 1;
+    const now = Date.now();
+    while (i >= 0) {
+      if (now - this.messages[i][0] > EXPIRE_AFTER_MS) {
+        // remove the last element
+        this.messages.pop();
+
+        // broadcast removal of message
+        this.clientSocket.sendMessages(this.messages);
+
+        // the messages are in recent to oldest order,
+        // so all messages before index i can carry on without expiring.
+        // Therefore we can exit out of the function.
+        return;
+      } else {
+        i--;
+      }
+    }
+  }
+
+  addToMessages(message: string) {
+    this.messages.unshift([Date.now(), message]);
+    this.clientSocket.sendMessages(this.messages);
   }
 }
 

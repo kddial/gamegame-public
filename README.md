@@ -9,6 +9,11 @@ yarn install
 yarn start
 
 go to http://localhost:2000
+
+
+ALSO in a new terminal to watch for client side changes,
+cd client
+yarn start
 ```
 
 ```

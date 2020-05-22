@@ -4,13 +4,28 @@
     <link rel="stylesheet" href="/index.css" />
   </head>
   <body>
-    <div>
-      <label>
-        Name:
-        <input id="player-name-input" maxlength="14" size="12" />
-      </label>
-    </div>
     <canvas id="canvas" width="800" height="610"></canvas>
+    <div class="input-containers">
+      <div class="input-label">Name:</div>
+      <input id="player-name-input" maxlength="14" size="12" />
+    </div>
+    <div class="input-containers">
+      <div class="input-label">Chat:</div>
+      <input id="message-input" size="60" />
+    </div>
+    <br />
+    <br />
+    <p>
+      Controls: <br />
+      "wasd" or "arrow keys" to move <br />
+      "w" or "up-arrow-key" or "spacebar" to jump
+    </p>
+    <p>
+      Chat: <br />
+      Focus on the input field by pressing the "enter" key, <br />
+      then type your message, <br />
+      then press "enter" again to send.
+    </p>
 
     <div>
       <br />

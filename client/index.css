@@ -10,3 +10,11 @@ body {
 input {
   font-family: monospace;
 }
+
+.input-containers {
+  display: flex;
+}
+
+.input-containers .input-label {
+  width: 100px;
+}

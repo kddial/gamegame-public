@@ -4,5 +4,4 @@ interface OtherPlayerInfo {
   pose: string;
   horizontalScale: number;
   id: string;
-  name: string;
 }

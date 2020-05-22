@@ -9,22 +9,14 @@ const {
 } = CONSTANTS;
 import Platforms from './platforms';
 import { drawBorderRect } from './draw-helpers.js';
-
-const IMG_SPRITE_PATH = 'platform_v1.1.png';
+import ImageLoader from './image-loader.js';
 
 class PlatformSprite {
-  loaded: boolean;
   img: HTMLImageElement;
   ctx: CanvasRenderingContext2D;
 
-  constructor(ctx: CanvasRenderingContext2D) {
-    this.loaded = false;
-    this.img = new Image();
-    this.img.addEventListener('load', () => {
-      console.log('platform image loaded');
-      this.loaded = true;
-    });
-    this.img.src = IMG_PATH_PREFIX + IMG_SPRITE_PATH;
+  constructor(ctx: CanvasRenderingContext2D, imageLoader: ImageLoader) {
+    this.img = imageLoader.platformSpriteImg;
     this.ctx = ctx;
   }
 
@@ -35,8 +27,8 @@ class PlatformSprite {
     destY = 0,
     width = PLATFORM_SPRITE_W,
   ) {
-    if (this.loaded === false) {
-      console.log('image not loaded yet');
+    if (!!this.img?.src === false) {
+      console.log('Platform image not loaded yet');
       return;
     }
     this.ctx.drawImage(
