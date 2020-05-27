@@ -27,7 +27,7 @@ class ClientSocket {
   sendQueue: Array<string | Uint8Array>;
 
   constructor() {
-    this.socket = new WebSocket(`ws://${HOST}`);
+    this.socket = new WebSocket(`wss://${HOST}`);
     this.socket.binaryType = 'arraybuffer';
 
     this.socket.onopen = this.onOpen;
