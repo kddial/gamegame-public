@@ -1,3 +1,5 @@
+PUBLIC FORK of 'gamegame' which is being developed in a private repo
+
 # dev and build
 
 To run dev locally
